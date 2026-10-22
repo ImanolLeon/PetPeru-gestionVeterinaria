@@ -1,0 +1,138 @@
+    <!-- ============================ CONTACTO ============================ -->
+    <section class="section section--dark" id="contacto" aria-labelledby="contactoTitle" th:fragment="contacto" xmlns:th="http://www.thymeleaf.org">
+        <div class="container">
+
+            <div class="contacto__grid">
+
+                <div>
+                    <h2 class="section__title" id="contactoTitle">¿Tienes alguna duda? Comunícate con nosotros</h2>
+                    <p class="section__sub">
+                        Escríbenos y te respondemos el mismo día. Atendemos consultas
+                        por WhatsApp, teléfono o correo.
+                    </p>
+
+                    <div class="canales">
+                        <!-- Reemplazá el número y el dominio por los reales -->
+                        <a class="canal" href="https://wa.me/51936468431" target="_blank" rel="noopener">
+                            <!-- Lucide: message-circle (ISC) -->
+                            <svg class="lucide lucide-message-circle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a2 2 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719"/>
+                            </svg>
+                            <span>
+                                <span class="canal__label">WhatsApp</span>
+                                <span class="canal__value">(+51) 936 468 431</span>
+                            </span>
+                        </a>
+
+                        <a class="canal" href="tel:+51936468431">
+                            <!-- Lucide: phone (ISC) -->
+                            <svg class="lucide lucide-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384"/>
+                            </svg>
+                            <span>
+                                <span class="canal__label">Teléfono</span>
+                                <span class="canal__value">(+51) 936 468 431</span>
+                            </span>
+                        </a>
+
+                        <a class="canal" href="mailto:clinicaveterinariapetsalud@gmail.com">
+                            <!-- Lucide: mail (ISC) -->
+                            <svg class="lucide lucide-mail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"/>
+                                <rect x="2" y="4" width="20" height="16" rx="2"/>
+                            </svg>
+                            <span>
+                                <span class="canal__label">Correo</span>
+                                <span class="canal__value">clinicaveterinariapetsalud@gmail.com</span>
+                            </span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Formulario: validación en el cliente y envío con Web3Forms -->
+                <div class="form-card">
+                    <h3 class="form-card__title">Pide tu cita o deja tu consulta</h3>
+                    <p class="form-card__hint">Los campos marcados son obligatorios.</p>
+
+                    <!-- Formulario conectado a Web3Forms (https://web3forms.com).
+                         La Access Key llega desde .env (WEB3FORMS_ACCESS_KEY). -->
+                    <form id="contactForm"
+                          action="https://api.web3forms.com/submit"
+                          method="POST"
+                          novalidate>
+                        <input type="hidden" name="access_key" th:value="${web3formsAccessKey}">
+                        <input type="hidden" name="subject" value="Nueva consulta desde la web de Pet'Salud">
+                        <input type="hidden" name="from_name" value="Web Pet'Salud">
+                        <input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off"
+                               style="position:absolute;left:-9999px" aria-hidden="true">
+
+                        <div class="form-grid">
+
+                            <div class="field">
+                                <label for="nombre">Nombre</label>
+                                <input id="nombre" name="nombre" type="text" autocomplete="name"
+                                       placeholder="Tu nombre" required>
+                                <p class="field__error" id="error-nombre" data-error-for="nombre"></p>
+                            </div>
+
+                            <div class="field">
+                                <label for="telefono">Teléfono</label>
+                                <input id="telefono" name="telefono" type="tel" autocomplete="tel"
+                                       placeholder="999 999 999" required>
+                                <p class="field__error" id="error-telefono" data-error-for="telefono"></p>
+                            </div>
+
+                            <div class="field field--full">
+                                <label for="email">Correo electrónico</label>
+                                <input id="email" name="email" type="email" autocomplete="email"
+                                       placeholder="tu@correo.com" required>
+                                <p class="field__error" id="error-email" data-error-for="email"></p>
+                            </div>
+
+                            <div class="field">
+                                <label for="mascota">Nombre de la mascota</label>
+                                <input id="mascota" name="mascota" type="text"
+                                       placeholder="Ej. Toby" required>
+                                <p class="field__error" id="error-mascota" data-error-for="mascota"></p>
+                            </div>
+
+                            <div class="field">
+                                <label for="especie">Especie</label>
+                                <select id="especie" name="especie" required>
+                                    <option value="">Elige una opción</option>
+                                    <option value="perro">Perro</option>
+                                    <option value="gato">Gato</option>
+                                    <option value="otro">Otro</option>
+                                </select>
+                                <p class="field__error" id="error-especie" data-error-for="especie"></p>
+                            </div>
+
+                            <div class="field field--full">
+                                <label for="mensaje">Mensaje</label>
+                                <textarea id="mensaje" name="mensaje"
+                                          placeholder="¿En qué podemos ayudarte?" required></textarea>
+                                <p class="field__error" id="error-mensaje" data-error-for="mensaje"></p>
+                            </div>
+
+                        </div>
+                        <p class="field__error" id="formError" role="alert"></p>
+                        <button class="btn btn--primary" type="submit">Enviar mensaje</button>
+                    </form>
+
+                    <div class="form-success" id="formSuccess" role="status">
+                        <div class="form-success__icon" aria-hidden="true">
+                            <!-- Lucide: circle-check (ISC) -->
+                            <svg class="lucide lucide-circle-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"/>
+                                <path d="m16 9-5.5 5.5L8 12"/>
+                            </svg>
+                        </div>
+                        <h3>Mensaje enviado. Te respondemos hoy.</h3>
+                        <p>Gracias por escribirnos. Te escribimos al teléfono o al
+                           correo que dejaste, normalmente en el día.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>

@@ -1,0 +1,60 @@
+    <!-- =========================== UBICACIÓN =========================== -->
+    <section class="section section--soft" id="ubicacion" aria-labelledby="ubicacionTitle" th:fragment="ubicacion" xmlns:th="http://www.thymeleaf.org">
+        <div class="container">
+
+            <div class="ubicacion__grid">
+
+                <div>
+                    <h2 class="section__title" id="ubicacionTitle">Dónde encontrarnos</h2>
+                    <p class="section__sub">
+                        Estamos en Chiclayo, con consultorios, laboratorio
+                        y quirófano en el mismo edificio.
+                    </p>
+
+                    <div class="datos">
+                        <div>
+                            <p class="dato__label">Dirección</p>
+                            <p class="dato__value">
+                                <strong>Avenida Las Américas 216</strong><br>
+                                Chiclayo, Lambayeque
+                            </p>
+                        </div>
+                        <div>
+                            <p class="dato__label">Horarios de atención</p>
+                            <p class="dato__value">
+                                <strong>Lunes a sabados: </strong><br>
+                                9am a 8pm
+                               <br>
+                                <strong>Domingos: </strong> <br>
+                                9am a 1pm
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="ubicacion__cta">
+                        <a class="btn btn--primary"
+                           href="https://www.google.com/maps/dir/?api=1&amp;destination=Av.+Las+Am%C3%A9ricas+216%2C+Chiclayo"
+                           target="_blank" rel="noopener">
+                            <!-- Lucide: navigation (ISC) -->
+                            <svg class="lucide lucide-navigation" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <polygon points="3 11 22 2 13 21 11 13 3 11"/>
+                            </svg>
+                            Cómo llegar
+                        </a>
+
+
+                    </div>
+                </div>
+
+                <!-- Mapa real de Google Maps -->
+                <div class="mapa">
+                    <iframe
+                        src="https://www.google.com/maps/embed?pb=!3m2!1ses-419!2spe!4v1792621036790!5m2!1ses-419!2spe!6m8!1m7!1sOskSq5PNX-sM8UbAtajUhg!2m2!1d-6.777483947718028!2d-79.8419833202213!3f247.57081481386524!4f-7.596885389825374!5f0.7820865974627469"
+                        width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"
+                        referrerpolicy="strict-origin-when-cross-origin"
+                        title="Mapa de la ubicación de Pet'Salud, Avenida Las Américas, Chiclayo"></iframe>
+                </div>
+
+            </div>
+        </div>
+    </section>

@@ -1,0 +1,208 @@
+<!-- =========================================================================
+     PANEL DE ADMINISTRACIÓN · Tablas con el mismo estilo que el dashboard
+     ========================================================================= -->
+<div class="dashboard" xmlns:th="http://www.thymeleaf.org"
+     xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+    <!-- Clientes -->
+    <section class="panel">
+        <div class="panel__head">
+            <h2 class="panel__title">Administración · Clientes</h2>
+        </div>
+
+        <div class="table-wrap">
+            <table id="adminClientesTable">
+                <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Email</th>
+                    <th>Teléfono</th>
+                    <th style="text-align:right">Acciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="c : ${clientes.content}" data-row>
+                    <td class="align-middle" th:text="${c.nombre}">Nombre</td>
+                    <td class="align-middle" th:text="${c.apellido}">Apellido</td>
+                    <td class="align-middle muted" th:text="${c.email}">email</td>
+                    <td class="align-middle" th:text="${c.telefono}">Teléfono</td>
+                    <td>
+                        <div class="actions">
+                            <a class="action action--danger"
+                               th:href="@{/admin/eliminarCliente/{id}(id=${c.id})}"
+                               th:aria-label="|Eliminar cliente ${c.nombre}|"
+                               data-confirm
+                               data-confirm-title="Eliminar cliente"
+                               th:data-confirm-text="|¿Eliminar al cliente ${c.nombre}?|"
+                               data-confirm-label="Sí, eliminar">
+                                <svg class="icon"><use href="#i-trash"/></svg>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                <tr class="empty-row" th:if="${clientes.totalElements == 0}">
+                    <td colspan="5">No hay clientes registrados.</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="panel__foot">
+            <span th:text="|Total: ${clientes.totalElements} clientes|">Total: 0</span>
+            <div th:replace="~{fragments/paginacion :: pager(${clientes}, @{/admin}, 'pageClientes')}"></div>
+        </div>
+    </section>
+
+    <!-- Veterinarios -->
+    <section class="panel">
+        <div class="panel__head">
+            <div style="display:flex;align-items:center;gap:12px">
+                <h2 class="panel__title">Administración · Veterinarios</h2>
+                <a class="btn btn--primary" th:href="@{/admin/veterinarios/nuevo}">
+                    <svg class="icon"><use href="#i-plus"/></svg> Crear veterinario
+                </a>
+            </div>
+        </div>
+
+        <div class="table-wrap">
+            <table id="adminVeterinariosTable">
+                <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Especialidad</th>
+                    <th>Teléfono</th>
+                    <th style="text-align:right">Acciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="v : ${veterinarios.content}" data-row>
+                    <td class="align-middle" th:text="${v.nombre}">Nombre</td>
+                    <td class="align-middle" th:text="${v.especialidad}">Especialidad</td>
+                    <td class="align-middle" th:text="${v.telefono}">Teléfono</td>
+                    <td>
+                        <div class="actions">
+                            <a class="action action--danger"
+                               th:href="@{/admin/eliminarVeterinario/{id}(id=${v.id})}"
+                               th:aria-label="|Eliminar veterinario ${v.nombre}|"
+                               data-confirm
+                               data-confirm-title="Eliminar veterinario"
+                               th:data-confirm-text="|¿Eliminar al veterinario ${v.nombre}?|"
+                               data-confirm-label="Sí, eliminar">
+                                <svg class="icon"><use href="#i-trash"/></svg>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                <tr class="empty-row" th:if="${veterinarios.totalElements == 0}">
+                    <td colspan="4">No hay veterinarios registrados.</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="panel__foot">
+            <span th:text="|Total: ${veterinarios.totalElements} veterinarios|">Total: 0</span>
+            <div th:replace="~{fragments/paginacion :: pager(${veterinarios}, @{/admin}, 'pageVets')}"></div>
+        </div>
+    </section>
+
+    <!-- Citas -->
+    <section class="panel">
+        <div class="panel__head">
+            <h2 class="panel__title">Administración · Citas</h2>
+        </div>
+
+        <div class="table-wrap">
+            <table id="adminCitasTable">
+                <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Mascota</th>
+                    <th>Veterinario</th>
+                    <th>Estado</th>
+                    <th style="text-align:right">Acciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="c : ${citas.content}" data-row>
+                    <td class="align-middle" th:text="${c.fechaCita}">Fecha</td>
+                    <td class="align-middle" th:text="${c.mascota != null ? c.mascota.nombre : '-'}">Mascota</td>
+                    <td class="align-middle" th:text="${c.veterinario != null ? c.veterinario.nombre : '-'}">Veterinario</td>
+                    <td class="align-middle" th:text="${c.estado}">Estado</td>
+                    <td>
+                        <div class="actions">
+                            <button class="action" type="button"
+                                    th:attr="data-bs-toggle='modal',data-bs-target='#modalAdmin' + ${c.id}"
+                                    th:aria-label="|Ver detalles de cita ${c.id}|">
+                                <svg class="icon"><use href="#i-eye"/></svg>
+                            </button>
+                            <a class="action action--danger"
+                               th:href="@{/admin/eliminarCita/{id}(id=${c.id})}"
+                               th:aria-label="|Eliminar cita ${c.id}|"
+                               data-confirm
+                               data-confirm-title="Eliminar cita"
+                               th:data-confirm-text="|¿Eliminar la cita #${c.id}?|"
+                               data-confirm-label="Sí, eliminar">
+                                <svg class="icon"><use href="#i-trash"/></svg>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                <tr class="empty-row" th:if="${citas.totalElements == 0}">
+                    <td colspan="5">No hay citas registradas.</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="panel__foot">
+            <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+                <span th:text="|Total: ${citas.totalElements} citas|">Total: 0</span>
+                <a class="btn btn-secondary" th:href="@{/panel}">Atrás</a>
+            </div>
+            <div th:replace="~{fragments/paginacion :: pager(${citas}, @{/admin}, 'pageCitas')}"></div>
+        </div>
+    </section>
+
+    <!-- Modales de detalles -->
+    <div th:each="c : ${citas.content}">
+        <div class="modal fade" th:id="'modalAdmin' + ${c.id}" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2 class="modal-title">Detalles de la cita</h2>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p><strong>Fecha:</strong> <span th:text="${c.fechaCita}"></span></p>
+                        <p><strong>Hora:</strong> <span th:text="${c.horaCita}"></span></p>
+                        <p><strong>Estado:</strong> <span th:text="${c.estado}"></span></p>
+                        <p><strong>Mascota:</strong> <span th:text="${c.mascota != null ? c.mascota.nombre : '-'}"></span></p>
+                        <p><strong>Veterinario:</strong> <span th:text="${c.veterinario != null ? c.veterinario.nombre : '-'}"></span></p>
+                        <div th:if="${c.motivo != null}">
+                            <strong>Motivo:</strong>
+                            <p th:text="${c.motivo}"></p>
+                        </div>
+                        <div th:if="${c.historialClinico != null}">
+                            <hr>
+                            <h6 class="fw-bold">Historial clínico</h6>
+                            <div th:if="${c.historialClinico.diagnostico != null}">
+                                <strong>Diagnóstico:</strong> <span th:text="${c.historialClinico.diagnostico}"></span>
+                            </div>
+                            <div th:if="${c.historialClinico.tratamiento != null}">
+                                <strong>Tratamiento:</strong> <span th:text="${c.historialClinico.tratamiento}"></span>
+                            </div>
+                            <div th:if="${c.historialClinico.observaciones != null}">
+                                <strong>Observaciones:</strong> <span th:text="${c.historialClinico.observaciones}"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

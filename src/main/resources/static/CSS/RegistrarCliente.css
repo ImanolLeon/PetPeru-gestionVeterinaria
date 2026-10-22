@@ -1,0 +1,79 @@
+.modal-content{
+
+    background: linear-gradient(135deg, #414559, #51576D);
+        display: flex;
+        /* justify-content: right; */
+        align-items: center;
+        width: 80%;
+
+
+}
+.contenedor{
+    display: flex;
+    gap: 1em;
+    padding-bottom: 10px;
+}
+.modal-dialog{
+    display: flex;
+    /* width: 35%; */
+    /* align-items: center; */
+    justify-content: center;
+}
+.modal-header{
+    width: 100%;
+    border: none;
+    justify-content: center;
+}
+.modal-header h2 {
+
+    margin-top: 10px;
+    color: #ee99a0;
+}
+.modal-header .btn-close{
+    margin: 0;
+    position: absolute;
+    right: 8px;
+}
+.modal-footer a{
+    color: #c6d0f5;
+}
+.modal-footer{
+    width: 100%;
+    justify-content: space-between;
+    border: none;
+}
+.modal-body{
+    width: 80%;
+}
+.modal-content input {
+    margin: 5px 0px 10px 0px;
+}
+.modal-content label{
+    color: #c6d0f5;
+    font-weight: bold;
+}
+.modal-content input{
+    width: 100%;
+    padding: 12px 0;
+    border: none;
+    border-bottom: 1px solid #64748b;
+    background: transparent;
+    color: #c6d0f5;
+    font-size: 16px;
+    transition: border-color 0.3s ease;
+}
+.modal-content input::placeholder{
+    color: #94a3b8;
+}
+
+.modal-content input:focus{
+    outline: none;
+    border-bottom: 2px solid #6366f1;
+    transform: scale(1.02);
+}
+
+.panel-principal{
+    
+    height: 100%;
+    width: 100%;
+}

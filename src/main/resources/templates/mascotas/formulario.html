@@ -1,0 +1,106 @@
+<!-- =========================================================================
+     MASCOTA · Formulario (sirve para registrar y para editar)
+     Si el modelo trae una mascota con id, la vista entra en modo edición:
+     el título cambia y el formulario envía el id en un campo oculto.
+     ========================================================================= -->
+<div class="panel" xmlns:th="http://www.thymeleaf.org">
+
+    <div class="panel__head">
+        <h2 class="panel__title"
+            th:text="${mascota.id != null} ? 'Editar mascota' : 'Registrar nueva mascota'">
+            Registrar nueva mascota
+        </h2>
+    </div>
+
+    <div class="modal-body p-4">
+
+        <form th:action="@{/clientes/{id}/mascotas/guardar(id=${clienteId})}"
+              th:object="${mascota}"
+              method="post"
+              enctype="multipart/form-data">
+
+            <!-- Solo lleva valor cuando se está editando -->
+            <input type="hidden" th:field="*{id}">
+
+            <div class="contenedor">
+                <!-- Nombre -->
+                <div>
+                    <label for="nombre">Nombre *</label>
+                    <input class="form-control" type="text" id="nombre"
+                           th:field="*{nombre}" required>
+                    <small class="text-danger" th:if="${#fields.hasErrors('nombre')}"
+                           th:errors="*{nombre}">Error</small>
+                </div>
+
+                <!-- Especie -->
+                <div>
+                    <label for="especie">Especie *</label>
+                    <select class="form-select" id="especie" th:field="*{especie}" required>
+                        <option value="">-- Seleccionar --</option>
+                        <option value="Perro">Perro</option>
+                        <option value="Ave">Ave</option>
+                        <option value="Gato">Gato</option>
+                        <option value="Otro">Otro</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="contenedor mt-3">
+                <!-- Raza -->
+                <div>
+                    <label for="raza">Raza</label>
+                    <input class="form-control" type="text" id="raza"
+                           th:field="*{raza}">
+                </div>
+
+                <!-- Sexo -->
+                <div>
+                    <label for="sexo">Sexo</label>
+                    <select class="form-select" id="sexo" th:field="*{sexo}">
+                        <option value="macho">Macho</option>
+                        <option value="hembra">Hembra</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="contenedor mt-3">
+                <!-- Edad -->
+                <div>
+                    <label for="edad">Edad (años) *</label>
+                    <input class="form-control" type="number" id="edad"
+                           th:field="*{edad}" min="0" required>
+                </div>
+
+                <!-- Peso -->
+                <div>
+                    <label for="peso">Peso (Kg) *</label>
+                    <input class="form-control" type="number" id="peso"
+                           th:field="*{peso}" min="0" step="0.1" required>
+                </div>
+            </div>
+
+            <!-- Imagen (opcional) -->
+            <div class="mt-3">
+                <label for="archivoImagen">Imagen</label>
+                <input class="form-control" type="file" id="archivoImagen"
+                       name="archivoImagen" accept="image/*">
+                <small class="muted">Opcional. Formatos de imagen, tamaño máximo 10 MB.</small>
+                <small class="muted" style="display:block"
+                       th:if="${mascota.id != null and mascota.imagen != null}">
+                    Ya tiene una imagen guardada: se conserva si no subes otra.
+                </small>
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center mt-4">
+                <a class="btn btn-secondary"
+                   th:href="@{/clientes/{id}/mascotas(id=${clienteId})}">
+                    <svg class="icon"><use href="#i-chev-left"/></svg> Volver a la lista
+                </a>
+                <button type="submit" class="btn btn--primary">
+                    <svg class="icon"><use href="#i-plus-circle"/></svg>
+                    <span th:text="${mascota.id != null} ? 'Guardar cambios' : 'Guardar mascota'">Guardar mascota</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

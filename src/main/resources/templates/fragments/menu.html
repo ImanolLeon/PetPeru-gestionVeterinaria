@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<body>
+
+<!-- =========================================================================
+     SIDEBAR IZQUIERDO (fragmento "menu")
+     Se inserta desde layout/base.html con: th:replace="~{fragments/menu :: menu}"
+     El estado activo se deduce del atributo "contenido" que define cada
+     controlador (p. ej. "citas/listar", "admin/panel", "veterinario/agenda").
+     ========================================================================= -->
+<aside class="sidebar" id="sidebar" th:fragment="menu">
+
+    <!-- Perfil -->
+    <div class="profile">
+        <div class="profile__avatar">IA</div>
+        <div>
+            <div class="profile__role">Administrador</div>
+            <div class="profile__name">Imanol Alonso</div>
+        </div>
+    </div>
+
+    <!-- Navegación -->
+    <nav class="nav" aria-label="Navegación principal">
+
+        <a class="nav__item"
+           th:classappend="${contenido == null or #strings.startsWith(contenido,'home')} ? 'is-active' : ''"
+           th:href="@{/panel}"
+           sec:authorize="hasAnyRole('ADMIN','RECEPCION')">
+            <svg class="icon"><use href="#i-home"/></svg> Inicio
+        </a>
+
+        <a class="nav__item"
+           th:classappend="${contenido != null and contenido == 'citas/listar'} ? 'is-active' : ''"
+           th:href="@{/citas}"
+           sec:authorize="hasAnyRole('ADMIN','RECEPCION')">
+            <svg class="icon"><use href="#i-cal-check"/></svg> Citas
+        </a>
+
+        <!-- Vista propia del veterinario -->
+        <a class="nav__item"
+           th:classappend="${contenido != null and #strings.startsWith(contenido,'veterinario/')} ? 'is-active' : ''"
+           th:href="@{/veterinarios/agenda}"
+           sec:authorize="hasRole('VETERINARIO')">
+            <svg class="icon"><use href="#i-cal-check"/></svg> Mi agenda
+        </a>
+
+        <a class="nav__item"
+           th:classappend="${contenido != null and #strings.startsWith(contenido,'admin')} ? 'is-active' : ''"
+           th:href="@{/admin}"
+           sec:authorize="hasRole('ADMIN')">
+            <svg class="icon"><use href="#i-shield"/></svg> Administración
+        </a>
+
+        <a class="nav__item" href="#"
+           sec:authorize="hasAnyRole('ADMIN','RECEPCION')">
+            <svg class="icon"><use href="#i-calendar"/></svg> Calendario
+        </a>
+
+        <a class="nav__item"
+           th:classappend="${contenido != null and contenido == 'citas/formulario'} ? 'is-active' : ''"
+           th:href="@{/citas/nueva}"
+           sec:authorize="hasAnyRole('ADMIN','RECEPCION')">
+            <svg class="icon"><use href="#i-plus-circle"/></svg> Nueva cita
+        </a>
+
+        <!-- Salir: pide confirmación y cierra la sesión con POST -->
+        <button class="nav__item nav__item--logout" type="button"
+                data-confirm
+                data-confirm-title="Cerrar sesión"
+                data-confirm-text="¿Seguro que quieres salir?"
+                data-confirm-label="Sí, salir"
+                th:data-confirm-action="@{/logout}">
+            <svg class="icon"><use href="#i-logout"/></svg> Salir
+        </button>
+    </nav>
+
+    <!-- Espacio flexible: se puede colocar algo si se desea en el futuro -->
+</aside>
+
+</body>
+</html>

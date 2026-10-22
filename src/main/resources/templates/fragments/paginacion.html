@@ -1,0 +1,40 @@
+<!-- =========================================================================
+     PAGINACIÓN · Fragmento reutilizable (Spring Data Page)
+     Uso:
+       <div class="panel__foot">
+         <span>Mostrando N de TOTAL</span>
+         <div th:replace="~{fragments/paginacion :: pager(${clientes}, @{/clientes}, 'page')}"></div>
+       </div>
+
+     Parámetros:
+       page      : objeto org.springframework.data.domain.Page
+       baseUrl   : ruta del listado SIN query (se resuelve con @{...} para el context path)
+       paramName : nombre del parámetro de página (page, pageClientes, pageVets, pageCitas...)
+     ========================================================================= -->
+<nav th:fragment="pager(page, baseUrl, paramName)"
+     th:if="${page != null and page.totalPages > 1}"
+     class="pager" aria-label="Paginación"
+     th:with="desde=${page.number - 2 lt 0 ? 0 : page.number - 2},
+              hasta=${(page.number + 2 gt page.totalPages - 1) ? page.totalPages - 1 : page.number + 2}">
+
+  <!-- Anterior -->
+  <a th:classappend="${page.first} ? 'is-disabled'"
+     th:href="${page.first ? '#' : baseUrl + '?' + paramName + '=' + (page.number - 1)}"
+     rel="prev" aria-label="Página anterior">
+    <svg class="icon"><use href="#i-chev-left"/></svg>
+  </a>
+
+  <!-- Números de página (ventana de 5) -->
+  <a th:each="i : ${#numbers.sequence(desde, hasta)}"
+     th:classappend="${i == page.number} ? 'is-current'"
+     th:href="${baseUrl + '?' + paramName + '=' + i}"
+     th:text="${i + 1}"
+     th:aria-label="|Ir a la página ${i + 1}|">1</a>
+
+  <!-- Siguiente -->
+  <a th:classappend="${page.last} ? 'is-disabled'"
+     th:href="${page.last ? '#' : baseUrl + '?' + paramName + '=' + (page.number + 1)}"
+     rel="next" aria-label="Página siguiente">
+    <svg class="icon"><use href="#i-chev-right"/></svg>
+  </a>
+</nav>

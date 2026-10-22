@@ -1,0 +1,48 @@
+<!-- =========================================================================
+     MI AGENDA · Citas programadas del veterinario autenticado (paginado)
+     Consume del modelo: citas (Page<Cita>)
+     ========================================================================= -->
+<div class="dashboard" xmlns:th="http://www.thymeleaf.org">
+
+    <section class="panel">
+        <div class="panel__head">
+            <h2 class="panel__title">Mis citas</h2>
+        </div>
+
+        <div class="table-wrap">
+            <table id="agendaTable">
+                <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Mascota</th>
+                    <th>Estado</th>
+                    <th style="text-align:right">Acciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="cita : ${citas.content}" data-row>
+                    <td th:text="${cita.fechaCita}">Fecha</td>
+                    <td th:text="${cita.mascota.nombre}">Mascota</td>
+                    <td th:text="${cita.estado}">Estado</td>
+                    <td>
+                        <div class="actions">
+                            <form th:action="@{/historial/crear/{id}(id=${cita.id})}" method="get">
+                                <button type="submit" class="btn btn--primary">Atender</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr class="empty-row" th:if="${citas.totalElements == 0}">
+                    <td colspan="4">No tienes citas programadas.</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="panel__foot">
+            <span th:text="|Mostrando ${#lists.size(citas.content)} de ${citas.totalElements} citas|">Mostrando 0 de 0 citas</span>
+            <div th:replace="~{fragments/paginacion :: pager(${citas}, @{/veterinarios/agenda}, 'page')}"></div>
+        </div>
+    </section>
+</div>

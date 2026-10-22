@@ -1,0 +1,124 @@
+/* ============================================================================
+   HEADER · LANDING PÚBLICA · PET'SALUD
+   ---------------------------------------------------------------------------
+   Encabezado fijo de la landing.
+   Fragmento: src/main/resources/templates/landing/header.html
+        <header class="site-header">  th:fragment="header"
+
+   Cubre: barra fija, marca (logo + nombre), menú de navegación y el botón
+   hamburguesa del panel móvil.
+
+   La marca (.brand, .brand__mark, .brand__name) es compartida con el
+   footer: vive en static/CSS/landing/base.css.
+   ============================================================================ */
+
+/* ======================= ENCABEZADO FIJO ======================= */
+/* El header usa el mismo fondo que el hero (--teal-50) y no lleva ni linea
+   ni sombra: la barra se funde con la portada, sin cortes. */
+.site-header {
+    position: fixed;
+    inset: 0 0 auto 0;
+    z-index: 100;
+    height: var(--nav-h);
+    background: var(--teal-50);
+}
+/* Dos zonas en una sola fila: logo | menú (alineado a la derecha) */
+.site-header__inner {
+    height: 100%;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    column-gap: 16px;
+}
+/* En escritorio el envoltorio se disuelve: el nav pasa a ser celda de la
+   columna derecha. En móvil vuelve a ser una caja real (panel hamburguesa). */
+.site-header__panel { display: contents; }
+
+/* Zona central: opciones de menú en una sola línea, centradas en el header */
+.site-nav {
+    grid-column: 2;
+    justify-self: end;
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    margin: 0;
+}
+.site-nav__list {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    flex-wrap: nowrap;
+}
+.site-nav__link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0 8px;
+    color: var(--ink-700);
+    font-weight: 600;
+    font-size: .96rem;
+    text-decoration: none;
+    white-space: nowrap;
+    border-radius: var(--radius);
+    position: relative;
+    transition: color .15s ease, background-color .15s ease;
+}
+/* El hover necesita un tono distinto al fondo del header (--teal-50) */
+.site-nav__link:hover { color: var(--teal-900); background: rgba(27, 91, 78, .09); }
+.site-nav__link.is-active { color: var(--teal-900); }
+.site-nav__link.is-active::after {
+    content: "";
+    position: absolute;
+    left: 8px; right: 8px; bottom: 6px;
+    height: 3px;
+    background: var(--teal-600);
+    border-radius: 2px;
+}
+
+/* --- Botón hamburguesa (solo mobile) --- */
+.nav-toggle {
+    display: none;
+    grid-column: 2;
+    justify-self: end;
+    width: 46px; height: 46px;
+    align-items: center; justify-content: center;
+    background: transparent;
+    border: 2px solid var(--teal-900);
+    border-radius: var(--radius);
+    cursor: pointer;
+}
+.nav-toggle svg { width: 22px; height: 22px; stroke: var(--teal-900); fill: none; stroke-width: 2; stroke-linecap: round; }
+
+/* ========================= RESPONSIVE ========================= */
+/* Por debajo de 1023px el menú y los botones pasan al panel hamburguesa:
+   en el header quedan solo el logo y el botón de menú. */
+@media (max-width: 1023px) {
+    .nav-toggle { display: inline-flex; }
+    .site-header__panel {
+        display: none;
+        position: fixed;
+        inset: var(--nav-h) 0 auto 0;
+        margin: 0;
+        background: var(--teal-50);
+        border-bottom: 1px solid var(--border);
+        box-shadow: 0 14px 30px rgba(27, 91, 78, .12);
+        padding: 10px 24px 20px;
+        max-height: calc(100vh - var(--nav-h));
+        overflow-y: auto;
+    }
+    .site-header__panel.is-open { display: block; }
+    .site-nav { display: block; }
+    .site-nav__list { flex-direction: column; align-items: stretch; gap: 2px; }
+    .site-nav__link { min-height: 46px; padding: 0 10px; }
+    .site-nav__link.is-active::after { left: 10px; right: auto; width: 22px; bottom: 8px; }
+    .nav-toggle[aria-expanded="true"] { background: var(--teal-900); }
+    .nav-toggle[aria-expanded="true"] svg { stroke: var(--white); }
+}
+
+@media (max-width: 380px) {
+    .brand__name { font-size: 1.05rem; }
+}
+
+@media (prefers-contrast: more) {
+    .site-nav__link { color: var(--teal-900); }
+}

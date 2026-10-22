@@ -1,0 +1,163 @@
+/* ============================================================================
+   HERO · LANDING PÚBLICA · PET'SALUD
+   ---------------------------------------------------------------------------
+   Portada de la landing.
+   Fragmento: src/main/resources/templates/landing/hero.html
+        <section class="hero" id="inicio">  th:fragment="hero"
+
+   Cubre: la franja de portada a pantalla completa, el texto (antetítulo,
+   título, bajada y CTA), la foto recortada y su pie de foto.
+   ============================================================================ */
+
+/* ============================ HERO ============================ */
+/* El hero ocupa la pantalla menos el header fijo (72px) y centra su
+   contenido verticalmente. El padding superior deja libre el header
+   (position: fixed) y el inferior es simetrico con el espacio de arriba. */
+.hero {
+    min-height: calc(100vh - var(--nav-h));
+    padding-top: calc(var(--nav-h) + 56px);
+    padding-bottom: 56px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: var(--teal-50);
+    /* Huellitas de fondo: patron SVG con 3 huellas de distinta rotacion y
+       tamano. El relleno es el teal-900 al 7% sobre el fondo del hero, asi
+       que se ven al pasar la vista pero no compiten con el texto.
+       OJO: la 4a huella (translate(40,30) rotate(-16) scale(1.5)) se elimino
+       porque quedaba bajo el header fijo (0-72px) y salia recortada. Ninguna
+       huella debe empezar por encima de y=72 del tile: si se anaden mas,
+       comprobar que el borde superior de cada una queda por debajo de
+       --nav-h, o se veran cortadas contra el header. */
+    background-image: var(--huellas);
+    background-repeat: repeat;
+    background-size: 380px 380px;
+}
+/* Dos columnas: texto | foto.
+   align-items:center deja el bloque de texto centrado sobre el centro
+   de la imagen; ninguna columna lleva offsets que la empujen hacia abajo. */
+.hero__grid {
+    width: 100%;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, .92fr);
+    gap: 56px;
+    align-items: center;
+}
+/* El texto arranca en el borde de su columna: sin margin/padding propios
+   y con align-self explicito para que nada lo desalinee de la foto. */
+.hero__copy {
+    margin: 0 0 30% 0;
+    padding: 0;
+    align-self: center;
+}
+.hero__eyebrow {
+    display: inline-block;
+    font-size: .82rem;
+    font-weight: 700;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--teal-900);
+    border-left: 3px solid var(--teal-700);
+    padding-left: 11px;
+    margin-bottom: 18px;
+}
+.hero__title {
+    font-size: clamp(2.9rem, 7.2vw, 4.6rem);
+    font-weight: 700;
+    line-height: 1.02;
+    letter-spacing: .005em;
+}
+.hero__lead {
+    margin-top: 20px;
+    max-width: 60ch;
+    font-size: 1.1rem;
+}
+.hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-top: 32px;
+}
+.hero__login {
+    margin-top: 26px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(27, 91, 78, .14);
+    font-size: .97rem;
+}
+.hero__login a {
+    color: var(--teal-900);
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+.hero__login a:hover { color: var(--teal-700); }
+
+/* Foto recortada sobre el fondo */
+.hero__figure {
+    position: relative;
+    margin: 0;
+    padding: 0;
+    align-self: center;
+}
+.hero__figure::before {
+    content: "";
+    position: absolute;
+    left: -18px; top: 26px;
+    width: 54%; height: 74%;
+    background: var(--teal-500);
+    border-radius: var(--radius-lg);
+    opacity: .16;
+}
+.hero__photo {
+    position: relative;
+    aspect-ratio: 4 / 5;
+    border-radius: var(--radius-lg);
+    border: 10px solid var(--white);
+    overflow: hidden;
+    background: var(--white);
+}
+.hero__photo img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity .5s ease;
+}
+.hero__photo.is-loaded img { opacity: 1; }
+.hero__caption {
+    margin-top: 16px;
+    font-size: .92rem;
+    color: var(--ink-700);
+}
+
+/* ========================= RESPONSIVE ========================= */
+@media (max-width: 1024px) {
+    /* El hero sigue en dos columnas; solo se aprieta el espacio entre ellas. */
+    .hero__grid { gap: 40px; }
+}
+
+/* Por debajo de 768px el hero pasa a una columna: texto arriba y foto
+   debajo, ambos alineados a la izquierda (sin centrado vertical). */
+@media (max-width: 767px) {
+    .hero {
+        min-height: 0;
+        padding-top: calc(var(--nav-h) + 36px);
+        padding-bottom: 36px;
+        justify-content: flex-start;
+    }
+    .hero__grid {
+        grid-template-columns: 1fr;
+        gap: 36px;
+        align-items: start;
+    }
+    .hero__copy, .hero__figure { align-self: start; }
+    .hero__figure { max-width: 520px; }
+    .hero__photo { aspect-ratio: 16 / 11; }
+}
+
+@media (max-width: 380px) {
+    .hero__actions { flex-direction: column; align-items: stretch; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .hero__photo img { opacity: 1; transition: none; }
+}

@@ -1,0 +1,64 @@
+<!-- =========================================================================
+     MODAL "Registrar cliente" (fragmento reutilizable)
+     Mismo formato, tamaño y posición que el modal "Editar cliente" del inicio:
+       · diálogo centrado (modal-dialog-centered modal-lg)
+       · el <form> envuelve el cuerpo y el pie
+       · botones "Cancelar" + "Guardar cliente" alineados a la derecha
+     Se inserta en home.html con:
+       <div th:replace="~{clientes/formulario :: modalCliente}"></div>
+     Requiere en el modelo: cliente (Cliente vacío)
+     ========================================================================= -->
+<div th:fragment="modalCliente"
+     class="modal fade"
+     id="exampleModal" tabindex="-1"
+     aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="exampleModalLabel">Registrar cliente</h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                        aria-label="Cerrar"></button>
+            </div>
+
+            <form th:action="@{/clientes/guardar}"
+                  th:object="${cliente}"
+                  method="post">
+
+                <div class="modal-body">
+                    <div class="contenedor">
+                        <div>
+                            <label for="nombre">Nombre *</label>
+                            <input type="text" th:field="*{nombre}" required>
+
+                            <label for="dni">DNI *</label>
+                            <input type="text" maxlength="8" th:field="*{dni}" required>
+                            <small class="field-error" id="dniError" th:if="${errorDni}"
+                                   th:text="${errorDni}">Error</small>
+
+                            <label for="apellido">Apellidos</label>
+                            <input type="text" th:field="*{apellido}">
+                        </div>
+                        <div>
+                            <label for="telefono">Teléfono</label>
+                            <input type="text" maxlength="9" th:field="*{telefono}">
+
+                            <label for="email">Email</label>
+                            <input type="email" th:field="*{email}">
+
+                            <label for="direccion">Dirección</label>
+                            <input type="text" th:field="*{direccion}">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn--primary">Guardar cliente</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>

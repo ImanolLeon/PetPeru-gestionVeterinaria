@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Gestión veterinaria</title>
+    <link rel="icon" type="image/png" sizes="32x32" th:href="@{/img/favicon-32.png}">
+    <link rel="icon" type="image/png" sizes="16x16" th:href="@{/img/favicon-16.png}">
+    <link rel="apple-touch-icon" sizes="180x180" th:href="@{/img/apple-touch-icon.png}">
+    <link rel="shortcut icon" th:href="@{/img/favicon-32.png}">
+    <link rel="icon" type="image/png" th:href="@{/img/logo.png}">
+    <!-- Bootstrap (lo usan los modales y las tablas existentes) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Tipografía Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Tipografía  Sniglet-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lilita+One&display=swap" rel="stylesheet">
+    <!-- Estilos del panel (define el shell: sidebar, topbar, tarjetas, tabla) -->
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+</head>
+
+<body>
+
+<!-- =========================================================================
+     Sprite de iconos de línea (estilo Lucide/Feather). Se usan con
+     <svg class="icon"><use href="#i-..."/></svg>
+     ========================================================================= -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5"/><path d="M5.5 9.5V21h13V9.5"/><path d="M10 21v-6h4v6"/></symbol>
+    <symbol id="i-cal-check" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2.5"/><path d="M3 9.5h18M8 3v4M16 3v4"/><path d="m9 15 2 2 4-4"/></symbol>
+    <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2.5"/><path d="M3 9.5h18M8 3v4M16 3v4"/><path d="M8 13h.01M12 13h.01M16 13h.01M8 17h.01M12 17h.01"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3 5 6v6c0 4.4 3 7.6 7 9 4-1.4 7-4.6 7-9V6l-7-3Z"/><path d="M12 8.5v4M12 15.5h.01"/></symbol>
+    <symbol id="i-plus-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8.5v7M8.5 12h7"/></symbol>
+    <symbol id="i-logout" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/></symbol>
+    <symbol id="i-bell" viewBox="0 0 24 24"><path d="M18 8.5a6 6 0 1 0-12 0c0 6.5-2.5 8.5-2.5 8.5h17S18 15 18 8.5Z"/><path d="M13.7 20.5a2 2 0 0 1-3.4 0"/></symbol>
+    <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4.5 20.5a7.5 7.5 0 0 1 15 0"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.2-3.2"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12Z"/><circle cx="12" cy="12" r="3"/></symbol>
+    <symbol id="i-pencil" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7.5 18.5 3.5 20l1.5-4L16.5 3.5Z"/></symbol>
+    <symbol id="i-trash" viewBox="0 0 24 24"><path d="M3.5 6h17"/><path d="M8.5 6V4.5a1.5 1.5 0 0 1 1.5-1.5h4a1.5 1.5 0 0 1 1.5 1.5V6"/><path d="M18.5 6 17.6 19a2 2 0 0 1-2 1.9H8.4a2 2 0 0 1-2-1.9L5.5 6"/><path d="M10 11v5M14 11v5"/></symbol>
+    <symbol id="i-paw" viewBox="0 0 24 24"><circle cx="7" cy="9" r="2.2"/><circle cx="12" cy="7" r="2.2"/><circle cx="17" cy="9" r="2.2"/><path d="M12 11.5c-3.3 0-6 2.4-6 5.2 0 1.9 1.5 3.3 3.5 3.3.9 0 1.5-.4 2.5-.4s1.6.4 2.5.4c2 0 3.5-1.4 3.5-3.3 0-2.8-2.7-5.2-6-5.2Z"/></symbol>
+    <symbol id="i-chev-left" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></symbol>
+    <symbol id="i-chev-right" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+    <symbol id="i-image" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2.5"/><circle cx="8.5" cy="8.5" r="1.8"/><path d="m21 15-3.1-3.1a2 2 0 0 0-2.8 0L6 21"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/></symbol>
+</svg>
+
+<div class="app">
+
+    <!-- Sidebar (fragmento) -->
+    <div th:replace="~{fragments/menu :: menu}"></div>
+
+    <!-- Capa oscura para el sidebar en móvil -->
+    <div class="overlay" id="overlay" hidden></div>
+
+    <div class="main">
+
+        <!-- Barra superior -->
+        <header class="topbar">
+            <div class="topbar__inner">
+                <button class="icon-btn menu-toggle" id="menuToggle" type="button"
+                        aria-label="Abrir menú" aria-controls="sidebar" aria-expanded="false">
+                    <svg class="icon"><use href="#i-menu"/></svg>
+                </button>
+
+                <div class="brand">
+
+                    <span style="font-size: 30px">Colita feliz</span>
+                </div>
+
+                <div class="topbar__actions">
+                    <!-- Campana con badge de notificaciones -->
+                    <button class="icon-btn" type="button" aria-label="Notificaciones: 3 sin leer">
+                        <svg class="icon"><use href="#i-bell"/></svg>
+                        <span class="badge">3</span>
+                    </button>
+                    <!-- Perfil -->
+                    <button class="avatar-btn" type="button" aria-label="Perfil">IA</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Contenido de la página: cada controlador indica qué plantilla cargar -->
+        <main class="content">
+            <div class="container">
+                <div th:replace="~{${contenido}}"></div>
+            </div>
+        </main>
+    </div>
+</div>
+
+<!-- =========================================================================
+     MODAL DE CONFIRMACIÓN REUTILIZABLE (salir / eliminar)
+     No se instancian botones ni modales: dashboard.js lo rellena a partir
+     de los data-* del elemento pulsado (bloque 5). Solo existe este.
+     ========================================================================= -->
+<div class="modal fade" id="confirmModal" tabindex="-1"
+     aria-labelledby="confirmModalTitle" aria-describedby="confirmModalText"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="confirmModalTitle">¿Estás seguro?</h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+
+            <div class="modal-body">
+                <div class="confirm__body">
+                    <span class="confirm__icon">
+                        <svg class="icon" viewBox="0 0 24 24">
+                            <path d="M12 3.5 2.8 19.5h18.4L12 3.5Z"/>
+                            <path d="M12 10v4M12 17h.01"/>
+                        </svg>
+                    </span>
+                    <div>
+                        <p class="confirm__text" id="confirmModalText">¿Seguro que quieres continuar?</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn--danger" id="confirmModalOk">Sí, eliminar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script th:src="@{/js/dashboard.js}"></script>
+<script th:src="@{/js/contacto.js}" defer></script>
+</body>
+</html>

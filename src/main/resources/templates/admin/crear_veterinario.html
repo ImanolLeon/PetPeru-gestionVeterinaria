@@ -1,0 +1,25 @@
+
+<h2>Registrar Veterinario</h2>
+
+<form th:action="@{/admin/veterinarios/guardar}" method="post" th:object="${veterinario}">
+
+    <label>Nombre:</label>
+    <input type="text" th:field="*{nombre}" required>
+
+    <label>Especialidad:</label>
+    <input type="text" th:field="*{especialidad}" required>
+
+    <h3>Datos de acceso</h3>
+
+    <label>Username:</label>
+    <input type="text" name="username" required>
+
+    <label>Password:</label>
+    <input type="password" name="password" required>
+
+    <button type="submit">Guardar</button>
+
+</form>
+
+<br>
+<a th:href="@{/admin}">Volver al Panel</a>

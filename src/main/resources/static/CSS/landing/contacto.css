@@ -1,0 +1,156 @@
+/* ============================================================================
+   CONTACTO · LANDING PÚBLICA · PET'SALUD
+   ---------------------------------------------------------------------------
+   Sección de contacto: canales (WhatsApp / teléfono / correo) y formulario.
+   Fragmento: src/main/resources/templates/landing/contacto.html
+        <section class="section section--dark" id="contacto">
+        th:fragment="contacto"
+
+   Cubre: la rejilla de la sección, las tarjetas de canal, el formulario con
+   sus campos "sin caja" y el mensaje de éxito.
+   ============================================================================ */
+
+/* ========================= CONTACTO ========================= */
+.contacto__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 52px;
+    align-items: start;
+}
+/* minmax(0,1fr) evita que un correo largo fuerce la anchura de la columna */
+.canales { display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; margin-top: 30px; max-width: 46ch; }
+.canal {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    min-width: 0;
+    min-height: 58px;
+    padding: 12px 18px;
+    background: rgba(255, 255, 255, .08);
+    border: 1px solid rgba(255, 255, 255, .5);
+    border-radius: var(--radius);
+    color: var(--white);
+    text-decoration: none;
+    transition: background-color .16s ease, border-color .16s ease;
+}
+/* Los tres canales (WhatsApp, telefono y correo) son el mismo componente:
+   misma tarjeta translucida, mismo icono, misma etiqueta. Ninguno se
+   invierte a blanco al pasar el cursor. */
+.canal:hover { background: rgba(255, 255, 255, .14); border-color: rgba(255, 255, 255, .72); }
+.canal svg { width: 22px; height: 22px; fill: none; stroke: var(--teal-100); stroke-width: 1.8; flex: 0 0 auto; }
+.canal__label { display: block; font-size: .78rem; text-transform: uppercase; letter-spacing: .08em; color: var(--teal-50); opacity: .8; }
+.canal__value { display: block; font-weight: 700; font-size: 1.03rem; color: var(--white); overflow-wrap: anywhere; }
+/* El bloque de texto de cada canal debe poder encogerse (correos largos) */
+.canal > span { min-width: 0; }
+
+/* --- Formulario --- */
+.form-card {
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    padding: 32px 30px 34px;
+    color: var(--ink-700);
+}
+.form-card__title { font-size: 1.4rem; margin-bottom: 6px; }
+.form-card__hint { font-size: .93rem; color: var(--ink-700); margin-bottom: 22px; }
+
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.field { display: grid; gap: 6px; }
+.field--full { grid-column: 1 / -1; }
+.field label { font-size: .9rem; font-weight: 700; color: var(--teal-900); }
+
+/* Los campos NO llevan caja: solo un trazo de lápiz (subrayado) debajo.
+   El trazo es de 1px en reposo y se engorda a 2px al enfocar; se hace con
+   box-shadow (no con border-width) para que el texto no se mueva al escribir. */
+.field input, .field select, .field textarea {
+    width: 100%;
+    min-height: 46px;
+    padding: 10px 2px;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 400;
+    color: black;
+    background-color: transparent;
+    -webkit-appearance: none;
+    appearance: none;
+    border: 0;
+    border-bottom: 1px solid var(--teal-600);
+    border-radius: 0;
+    transition: border-color .15s ease, box-shadow .15s ease;
+}
+.field textarea { min-height: 108px; resize: vertical; }
+.field select {
+    padding-right: 26px;
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23226F61' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 2px center;
+    background-size: 15px 15px;
+}
+.field input::placeholder, .field textarea::placeholder {
+    color: rgba(60, 79, 74, .55);
+    font-weight: 400;
+    opacity: 1;
+}
+/* El autocompletado del navegador pintaría una caja amarilla sobre el campo
+   "sin caja": se fuerza el fondo de la tarjeta con una sombra interior. */
+.field input:-webkit-autofill {
+
+}
+.field input:focus, .field select:focus, .field textarea:focus {
+
+}
+.field input:focus-visible, .field select:focus-visible, .field textarea:focus-visible {
+
+}
+.field [aria-invalid="true"] {
+    border-bottom-color: var(--danger);
+    box-shadow: 0 1px 0 var(--danger);
+}
+
+/* El mensaje de error reserva su hueco (min-height) desde el principio:
+   al aparecer NO empuja al resto del formulario, la maqueta no se mueve. */
+.field__error {
+    min-height: 1.2rem;
+    margin: 0;
+    font-size: .8rem;
+    line-height: 1.2;
+    font-weight: 600;
+    color: var(--danger);
+    opacity: 0;
+    transition: opacity .15s ease;
+}
+.field__error.is-visible { opacity: 1; }
+
+.form-card .btn { margin-top: 22px; width: 100%; }
+.form-card .btn[disabled] { opacity: .65; cursor: not-allowed; }
+
+.form-success {
+    display: none;
+    text-align: left;
+    padding: 10px 0 4px;
+}
+.form-success.is-visible { display: block; }
+.form-success__icon {
+    width: 54px; height: 54px;
+    display: grid; place-items: center;
+    border-radius: 50%;
+    background: var(--teal-700);
+    margin-bottom: 16px;
+}
+.form-success__icon svg { width: 28px; height: 28px; stroke: var(--white); fill: none; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+.form-success h3 { font-size: 1.45rem; }
+.form-success p { margin-top: 10px; }
+
+/* ========================= RESPONSIVE ========================= */
+@media (max-width: 1024px) {
+    .contacto__grid { grid-template-columns: 1fr; gap: 40px; }
+}
+
+@media (max-width: 700px) {
+    .form-grid { grid-template-columns: 1fr; }
+    .form-card { padding: 26px 22px 28px; }
+}
+
+@media (prefers-contrast: more) {
+    .field input, .field select, .field textarea { border-color: var(--teal-900); }
+}

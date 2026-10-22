@@ -1,0 +1,51 @@
+.panel-principal{
+    width: 100%;
+    height: 100%;
+}
+.contenedor-card{
+    
+    margin-top: 26px;
+    display: flex;
+    gap: 10px;
+}
+.card-clienteTotal {
+    background-color: #eff1f5;
+    height: 10em;
+    width: 15em;
+
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+    align-items: center;
+    border: solid 2px #4c4f69;
+}
+.card-clienteTotal-icono {
+    background-color: #a6da95;
+    display: flex;
+    align-items: center;
+    border-radius: 20px;
+}
+.card-clienteTotal-contenido {
+
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+}
+.contenedor-button-navegacion {
+    display: flex;
+    justify-content: end;
+    width: 100%;
+}
+
+.lista-clientes{
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.card-clienteTotal-contenido p{
+    font-family: "Noto Sans", serif;
+    font-weight: bold;
+    font-size: large;
+}

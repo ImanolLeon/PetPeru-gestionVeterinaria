@@ -1,0 +1,91 @@
+<!-- =========================================================================
+     LISTADO DE CLIENTES · Estilo coherente con el resto de tablas del panel
+     Se inserta desde layout/base.html con: th:replace="~{${contenido}}"
+     Consume del modelo: clientes (Page<Cliente>) y cliente (para el modal).
+     ========================================================================= -->
+<div class="dashboard" xmlns:th="http://www.thymeleaf.org">
+
+    <section class="panel">
+        <div class="panel__head">
+            <h2 class="panel__title">Clientes</h2>
+            <div class="panel__tools">
+                <label class="search">
+                    <svg class="icon"><use href="#i-search"/></svg>
+                    <input type="search" id="clientSearch" placeholder="Buscar cliente..."
+                           aria-label="Buscar cliente">
+                </label>
+                <button class="btn btn--primary" type="button"
+                        data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    <svg class="icon"><use href="#i-plus"/></svg> Nuevo cliente
+                </button>
+            </div>
+        </div>
+
+        <!-- Aviso de guardado correcto (flash) -->
+        <div th:if="${exito}" style="padding:18px 24px 0">
+            <div class="alert alert-success" role="alert" th:text="${exito}">Guardado</div>
+        </div>
+
+        <div class="table-wrap">
+            <table id="clientsTable">
+                <thead>
+                <tr>
+                    <th>Cliente</th>
+                    <th>DNI</th>
+                    <th>Apellido</th>
+                    <th>Email</th>
+                    <th>Teléfono</th>
+                    <th style="text-align:right">Acciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!-- Fila por cada cliente de la página actual -->
+                <tr th:each="c : ${clientes.content}" data-row>
+                    <td>
+                        <div class="client">
+                            <div class="client__avatar"
+                                 th:with="ini=${(#strings.isEmpty(c.nombre) ? '' : #strings.substring(c.nombre,0,1))
+                                               + (#strings.isEmpty(c.apellido) ? '' : #strings.substring(c.apellido,0,1))}"
+                                 th:text="${#strings.toUpperCase(ini)}">--</div>
+                            <span class="client__name" th:text="${c.nombre}">Nombre</span>
+                        </div>
+                    </td>
+                    <td th:text="${c.dni}">DNI</td>
+                    <td th:text="${c.apellido}">Apellido</td>
+                    <td class="muted" th:text="${c.email}">email</td>
+                    <td th:text="${c.telefono}">Teléfono</td>
+                    <td>
+                        <div class="actions">
+                            <a class="action" th:href="@{/clientes/{id}/mascotas(id=${c.id})}"
+                               th:aria-label="|Ver mascotas de ${c.nombre}|">
+                                <svg class="icon"><use href="#i-eye"/></svg>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr class="empty-row" th:if="${clientes.totalElements == 0}">
+                    <td colspan="6">No hay clientes registrados.</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="panel__foot">
+            <span id="tableSummary"
+                  th:text="|Mostrando ${#lists.size(clientes.content)} de ${clientes.totalElements} clientes|">Mostrando 0 de 0 clientes</span>
+            <div th:replace="~{fragments/paginacion :: pager(${clientes}, @{/clientes}, 'page')}"></div>
+        </div>
+    </section>
+
+    <!-- Modal "Registrar cliente" (mismo fragmento que usa el inicio) -->
+    <div th:replace="~{clientes/formulario :: modalCliente}"></div>
+
+    <!-- Si el servidor rechazó el DNI, se reabre el modal con lo escrito -->
+    <script th:if="${abrirModalRegistrar}">
+        document.addEventListener('DOMContentLoaded', function () {
+            if (typeof bootstrap === 'undefined') return;
+            bootstrap.Modal.getOrCreateInstance(document.getElementById('exampleModal')).show();
+        });
+    </script>
+</div>

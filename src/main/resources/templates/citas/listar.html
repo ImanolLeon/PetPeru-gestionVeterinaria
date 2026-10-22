@@ -1,0 +1,135 @@
+<!-- =========================================================================
+     AGENDA DE CITAS · Estilo coherente con el dashboard (panel verde/limpio)
+     ========================================================================= -->
+<div xmlns:th="http://www.thymeleaf.org"
+     xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+    <section class="panel">
+        <div class="panel__head">
+            <h2 class="panel__title">Agenda de Citas</h2>
+            <div class="panel__tools">
+                <label class="search">
+                    <svg class="icon"><use href="#i-search"/></svg>
+                    <input type="search" id="citasSearch" placeholder="Buscar cita..."
+                           aria-label="Buscar cita">
+                </label>
+                <a class="btn btn--primary" th:href="@{/citas/nueva}">
+                    <svg class="icon"><use href="#i-plus"/></svg> Nueva cita
+                </a>
+            </div>
+        </div>
+
+        <div class="table-wrap">
+            <table id="citasTable">
+                <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Mascota</th>
+                    <th>Veterinario</th>
+                    <th>Estado</th>
+                    <th style="text-align:right">Acciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="cita : ${citas.content}" data-row>
+                    <td class="align-middle" th:text="${cita.fechaCita}">2026-10-18</td>
+                    <td class="align-middle" th:text="${cita.mascota != null ? cita.mascota.nombre : '-'}">Mascota</td>
+                    <td class="align-middle" th:text="${cita.veterinario != null ? cita.veterinario.nombre : '-'}">Veterinario</td>
+                    <td class="align-middle" th:text="${cita.estado}">Programada</td>
+                    <td>
+                        <div class="actions">
+                            <button class="action" type="button"
+                                    th:attr="data-bs-toggle='modal',data-bs-target='#modal' + ${cita.id}"
+                                    th:aria-label="|Ver detalles de cita ${cita.id}|">
+                                <svg class="icon"><use href="#i-eye"/></svg>
+                            </button>
+                            <form th:action="@{/citas/eliminar/{id}(id=${cita.id})}"
+                                  method="post" style="display:inline">
+                                <button type="submit" class="action action--danger"
+                                        th:aria-label="|Eliminar cita ${cita.id}|"
+                                        data-confirm
+                                        data-confirm-title="Eliminar cita"
+                                        th:data-confirm-text="|¿Eliminar la cita #${cita.id}?|"
+                                        data-confirm-label="Sí, eliminar">
+                                    <svg class="icon"><use href="#i-trash"/></svg>
+                                </button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr class="empty-row" th:if="${citas.totalElements == 0}">
+                    <td colspan="5">Aún no hay citas registradas.</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="panel__foot">
+            <span id="citasSummary"
+                  th:text="|Mostrando ${#lists.size(citas.content)} de ${citas.totalElements} citas|">Mostrando 0 de 0</span>
+            <div th:replace="~{fragments/paginacion :: pager(${citas}, @{/citas}, 'page')}"></div>
+        </div>
+    </section>
+
+    <!-- Modales de detalles de citas -->
+    <div th:each="cita : ${citas.content}">
+        <div class="modal fade" th:id="'modal' + ${cita.id}" tabindex="-1"
+             aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2 class="modal-title">Detalles de la cita</h2>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Cerrar"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <strong>Fecha:</strong>
+                            <span th:text="${cita.fechaCita}"></span>
+                        </div>
+                        <div class="mb-3">
+                            <strong>Hora:</strong>
+                            <span th:text="${cita.horaCita}"></span>
+                        </div>
+                        <div class="mb-3">
+                            <strong>Estado:</strong>
+                            <span th:text="${cita.estado}"></span>
+                        </div>
+                        <div class="mb-3">
+                            <strong>Mascota:</strong>
+                            <span th:text="${cita.mascota != null ? cita.mascota.nombre : '-'}"></span>
+                        </div>
+                        <div class="mb-3">
+                            <strong>Veterinario:</strong>
+                            <span th:text="${cita.veterinario != null ? cita.veterinario.nombre : '-'}"></span>
+                        </div>
+                        <div class="mb-3" th:if="${cita.motivo != null}">
+                            <strong>Motivo:</strong>
+                            <p th:text="${cita.motivo}"></p>
+                        </div>
+                        <div th:if="${cita.historialClinico != null}">
+                            <hr>
+                            <h6 class="fw-bold">Historial clínico</h6>
+                            <div class="mb-2" th:if="${cita.historialClinico.diagnostico != null}">
+                                <strong>Diagnóstico:</strong>
+                                <span th:text="${cita.historialClinico.diagnostico}"></span>
+                            </div>
+                            <div class="mb-2" th:if="${cita.historialClinico.tratamiento != null}">
+                                <strong>Tratamiento:</strong>
+                                <span th:text="${cita.historialClinico.tratamiento}"></span>
+                            </div>
+                            <div th:if="${cita.historialClinico.observaciones != null}">
+                                <strong>Observaciones:</strong>
+                                <p th:text="${cita.historialClinico.observaciones}"></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,275 @@
+    <!-- ====================== PACIENTES FELICES ====================== -->
+    <section class="section section--white" id="pacientes" aria-labelledby="pacientesTitle" th:fragment="pacientes" xmlns:th="http://www.thymeleaf.org">
+        <div class="container">
+
+            <div class="section__head">
+                <h2 class="section__title" id="pacientesTitle">Pacientes felices</h2>
+                <p class="section__sub">
+                    Perros y gatos que pasaron por la clínica y volvieron a casa
+                    más tranquilos.
+                </p>
+
+            </div>
+
+            <div class="pacientes__controls">
+                <!-- Estado del carrusel: visible y anunciado a lectores de pantalla -->
+                <p class="pacientes__status" id="pacientesStatus" role="status" aria-live="polite">Paciente 1 de 6</p>
+
+                <div class="pacientes__buttons">
+                    <button class="carousel-btn" id="prevPaciente" type="button" aria-label="Ver el paciente anterior">
+                        <!-- Lucide: chevron-left (ISC) -->
+                        <svg class="lucide lucide-chevron-left" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
+                    </button>
+                    <button class="carousel-btn" id="nextPaciente" type="button" aria-label="Ver el paciente siguiente">
+                        <!-- Lucide: chevron-right (ISC) -->
+                        <svg class="lucide lucide-chevron-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Cada tarjeta muestra solo la foto, el nombre y la raza.
+                 Al pulsarla se abre el modal con la opinión del dueño y
+                 quién la escribió. Los datos del modal viven ocultos en
+                 .paciente__detalle y los lee el JS al abrirlo. -->
+            <div class="pacientes__track" id="pacientesTrack" tabindex="0"
+                 role="region" aria-label="Galería de pacientes felices, desplazable">
+
+                <article class="paciente">
+                    <div class="paciente__foto">
+                        <!-- @data-foto="paciente-1" -->
+                        <img src="https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&w=600&h=600&q=70"
+                             width="600" height="600" loading="lazy" decoding="async"
+                             alt="Golden retriever de pie junto a la puerta de la clínica">
+                    </div>
+                    <div class="paciente__body">
+                        <h3 class="paciente__name">Toby</h3>
+                        <p class="paciente__breed">
+                            Golden retriever
+                        </p>
+                        <span class="paciente__cta" aria-hidden="true">
+                            <!-- Lucide: message-circle (ISC) -->
+                            <svg class="lucide lucide-message-circle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
+                            Ver opinión
+                        </span>
+                    </div>
+
+                    <!-- Botón que cubre la tarjeta entera: es el que abre el modal.
+                         El texto visible va en .u-visually-hidden para los lectores
+                         de pantalla, que es lo que anuncia el botón. -->
+                    <button class="paciente__open" type="button" data-paciente>
+                        <span class="u-visually-hidden">Ver la opinión de Laura M. sobre Toby</span>
+                    </button>
+
+                    <div class="paciente__detalle" hidden>
+                        <span class="paciente__tag">Vacunación</span>
+                        <p class="paciente__quote">
+                            "Lo manejaron con mucha paciencia. Salió tranquilo y con
+                            la libreta al día."
+                        </p>
+                        <span class="paciente__owner">Laura M.</span>
+                    </div>
+                </article>
+
+                <article class="paciente">
+                    <div class="paciente__foto">
+                        <!-- @data-foto="paciente-2" -->
+                        <img src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?auto=format&fit=crop&w=600&h=600&q=70"
+                             width="600" height="600" loading="lazy" decoding="async"
+                             alt="Beagle mirando a la cámara durante la consulta veterinaria">
+                    </div>
+                    <div class="paciente__body">
+                        <h3 class="paciente__name">Luna</h3>
+                        <p class="paciente__breed">
+                            Beagle
+                        </p>
+                        <span class="paciente__cta" aria-hidden="true">
+                            <!-- Lucide: message-circle (ISC) -->
+                            <svg class="lucide lucide-message-circle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
+                            Ver opinión
+                        </span>
+                    </div>
+
+                    <button class="paciente__open" type="button" data-paciente>
+                        <span class="u-visually-hidden">Ver la opinión de Diego R. sobre Luna</span>
+                    </button>
+
+                    <div class="paciente__detalle" hidden>
+                        <span class="paciente__tag">Control mensual</span>
+                        <p class="paciente__quote">
+                            "Siempre me explican cómo va. Salgo con la idea clara
+                            de qué sigue."
+                        </p>
+                        <span class="paciente__owner">Diego R.</span>
+                    </div>
+                </article>
+
+                <article class="paciente">
+                    <div class="paciente__foto">
+                        <!-- @data-foto="paciente-3" -->
+                        <img src="https://images.unsplash.com/photo-1517849845537-4d257902454a?auto=format&fit=crop&w=600&h=600&q=70"
+                             width="600" height="600" loading="lazy" decoding="async"
+                             alt="Schnauzer pequeño con bufanda, paciente de cirugía menor">
+                    </div>
+                    <div class="paciente__body">
+                        <h3 class="paciente__name">Simón</h3>
+                        <p class="paciente__breed">
+                            Schnauzer
+                        </p>
+                        <span class="paciente__cta" aria-hidden="true">
+                            <!-- Lucide: message-circle (ISC) -->
+                            <svg class="lucide lucide-message-circle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
+                            Ver opinión
+                        </span>
+                    </div>
+
+                    <button class="paciente__open" type="button" data-paciente>
+                        <span class="u-visually-hidden">Ver la opinión de Carolina V. sobre Simón</span>
+                    </button>
+
+                    <div class="paciente__detalle" hidden>
+                        <span class="paciente__tag">Cirugía menor</span>
+                        <p class="paciente__quote">
+                            "Operaron a Simón por la mañana y esa misma tarde ya
+                            estaba en casa. Gracias por el seguimiento."
+                        </p>
+                        <span class="paciente__owner">Carolina V.</span>
+                    </div>
+                </article>
+
+                <article class="paciente">
+                    <div class="paciente__foto">
+                        <!-- @data-foto="paciente-4" -->
+                        <img src="https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=600&h=600&q=70"
+                             width="600" height="600" loading="lazy" decoding="async"
+                             alt="Gato blanco de pelo corto esperando su desparasitación">
+                    </div>
+                    <div class="paciente__body">
+                        <h3 class="paciente__name">Nube</h3>
+                        <p class="paciente__breed">
+                            Gato
+                        </p>
+                        <span class="paciente__cta" aria-hidden="true">
+                            <!-- Lucide: message-circle (ISC) -->
+                            <svg class="lucide lucide-message-circle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
+                            Ver opinión
+                        </span>
+                    </div>
+
+                    <button class="paciente__open" type="button" data-paciente>
+                        <span class="u-visually-hidden">Ver la opinión de Andrés P. sobre Nube</span>
+                    </button>
+
+                    <div class="paciente__detalle" hidden>
+                        <span class="paciente__tag">Desparasitación</span>
+                        <p class="paciente__quote">
+                            "Nube odia las visitas, pero sale tranquila. Eso vale
+                            mucho."
+                        </p>
+                        <span class="paciente__owner">Andrés P.</span>
+                    </div>
+                </article>
+
+                <article class="paciente">
+                    <div class="paciente__foto">
+                        <!-- @data-foto="paciente-5" -->
+                        <img src="https://images.unsplash.com/photo-1534361960057-19889db9621e?auto=format&fit=crop&w=600&h=600&q=70"
+                             width="600" height="600" loading="lazy" decoding="async"
+                             alt="Bulldog francés que recibió una radiografía en la clínica">
+                    </div>
+                    <div class="paciente__body">
+                        <h3 class="paciente__name">Milo</h3>
+                        <p class="paciente__breed">
+                            Bulldog francés
+                        </p>
+                        <span class="paciente__cta" aria-hidden="true">
+                            <!-- Lucide: message-circle (ISC) -->
+                            <svg class="lucide lucide-message-circle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
+                            Ver opinión
+                        </span>
+                    </div>
+
+                    <button class="paciente__open" type="button" data-paciente>
+                        <span class="u-visually-hidden">Ver la opinión de Sofía T. sobre Milo</span>
+                    </button>
+
+                    <div class="paciente__detalle" hidden>
+                        <span class="paciente__tag">Radiografía</span>
+                        <p class="paciente__quote">
+                            "Revisaron las radiografías en el momento y me explican
+                            todo sin apuro."
+                        </p>
+                        <span class="paciente__owner">Sofía T.</span>
+                    </div>
+                </article>
+
+                <article class="paciente">
+                    <div class="paciente__foto">
+                        <!-- @data-foto="paciente-6" -->
+                        <img src="https://images.unsplash.com/photo-1601758228041-f3b2795255f1?auto=format&fit=crop&w=600&h=600&q=70"
+                             width="600" height="600" loading="lazy" decoding="async"
+                             alt="Perro mestizo de pelo corto después del baño">
+                    </div>
+                    <div class="paciente__body">
+                        <h3 class="paciente__name">Chispa</h3>
+                        <p class="paciente__breed">
+                            Mestiza
+                        </p>
+                        <span class="paciente__cta" aria-hidden="true">
+                            <!-- Lucide: message-circle (ISC) -->
+                            <svg class="lucide lucide-message-circle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
+                            Ver opinión
+                        </span>
+                    </div>
+
+                    <button class="paciente__open" type="button" data-paciente>
+                        <span class="u-visually-hidden">Ver la opinión de Marcelo G. sobre Chispa</span>
+                    </button>
+
+                    <div class="paciente__detalle" hidden>
+                        <span class="paciente__tag">Baño y corte</span>
+                        <p class="paciente__quote">
+                            "Reservé por WhatsApp y a la media hora Chispa ya
+                            estaba lista."
+                        </p>
+                        <span class="paciente__owner">Marcelo G.</span>
+                    </div>
+                </article>
+
+            </div>
+        </div>
+
+        <!-- ===================== MODAL DE OPINIÓN =====================
+             Muestra la opinión del dueño y quién la escribió. Los datos se
+             rellenan desde la tarjeta pulsada (ver static/JS/landing.js). -->
+        <dialog class="paciente-modal" id="pacienteModal" aria-labelledby="pacienteModalNombre">
+            <div class="paciente-modal__inner">
+
+                <button class="paciente-modal__cerrar" type="button" data-cerrar-paciente>
+                    <!-- Lucide: x (ISC) -->
+                    <svg class="lucide lucide-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M18 6 6 18"/>
+                        <path d="m6 6 12 12"/>
+                    </svg>
+                    <span class="u-visually-hidden">Cerrar</span>
+                </button>
+
+                <!-- El src lo pone el JS al abrir el modal -->
+                <img class="paciente-modal__foto" id="pacienteModalFoto" alt="" width="600" height="400">
+
+                <div class="paciente-modal__body">
+                    <span class="paciente-modal__tag" id="pacienteModalTag"></span>
+                    <h3 class="paciente-modal__nombre" id="pacienteModalNombre"></h3>
+                    <p class="paciente-modal__raza" id="pacienteModalRaza"></p>
+
+                    <blockquote class="paciente-modal__cita">
+                        <p id="pacienteModalCita"></p>
+                        <footer class="paciente-modal__autor">
+                            <span class="paciente-modal__autor-label">Opinión de</span>
+                            <span id="pacienteModalAutor"></span>
+                        </footer>
+                    </blockquote>
+                </div>
+
+            </div>
+        </dialog>
+    </section>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<!-- ============================================================================
+     LANDING PÚBLICA · "Pet'Salud"
+     ---------------------------------------------------------------------------
+     Página autónoma (NO usa layout/base.html: sin sidebar ni topbar del panel).
+     Ruta: "/" (LandingController). Requiere modificar Spring Security para que
+     "/" sea público (ver HttpSecurityConfig).
+
+     CSS en archivos externos: static/CSS/landing/ (uno por fragmento:
+     base, header, hero, servicios, pacientes, contacto, ubicacion, footer).
+     Se enlazan todos en el <head> (ver landing/head.html).
+     JS en archivo externo: static/JS/landing.js (se carga con defer al final).
+
+     ---------------------------------------------------------------------------
+     FOTOS PLACEHOLDER — todas de Unsplash, reemplazables 1:1.
+     Buscá la etiqueta @data-foto en el HTML para ubicarlas rápido:
+       @data-foto="hero"        → foto principal del hero
+       @data-foto="paciente-1..6" → fotos cuadradas de pacientes
+     Para usar una foto propia: subila a src/main/resources/static/img/ y cambiá
+     el src por algo como  th:src="@{/img/paciente/mascota-1.jpg}"
+
+     ---------------------------------------------------------------------------
+     LOGO E ICONOS
+     Logo de la marca: static/img/logo.png (imagen real, verde sobre fondo
+     transparente) en el header y el footer. Se muestra sobre un disco blanco
+     (.brand__mark) para que tenga contraste en el footer teal.
+     Favicon: recortes de static/img/logo2.png (16/32/180 px, recortados al
+     contenido y centrados).
+
+     ICONOS — Lucide (lucide.dev), licencia ISC, v1.61.0.
+     Se usan los SVG oficiales en línea, con la clase "lucide lucide-<nombre>".
+    Iconos usados: menu, calendar-days, navigation, chevron-left,
+    chevron-right, phone, mail, circle-check, map-pin, message-circle, camera,
+    users, x.
+     IMPORTANTE: Lucide no incluye logos de marca (Instagram, Facebook,
+     WhatsApp fueron eliminados del set). Por eso cada red usa el glifo de
+     Lucide más cercano a su función:
+        WhatsApp  -> message-circle (chat)
+        Instagram -> camera (fotos)
+        Facebook  -> users (comunidad)
+     Los aria-labels siguen nombrando la red real para los lectores de
+     pantalla. Si alguna vez se quieren los logos oficiales, se toman de
+     Simple Icons (CC0) y no de Lucide.
+     --------------------------------------------------------------------------
+     ESTRUCTURA - la pagina se compone por fragmentos Thymeleaf en esta misma
+     carpeta. Cada archivo tiene un th:fragment propio y se inserta con
+     th:replace desde este esqueleto:
+        head.html      -> <head>            th:fragment="head"
+        header.html   -> <header>          th:fragment="header"
+         hero.html     -> <section id="inicio">      th:fragment="hero"
+        servicios.html-> <section id="servicios">   th:fragment="servicios"
+         pacientes.html-> <section id="pacientes">   th:fragment="pacientes"
+        contacto.html -> <section id="contacto">    th:fragment="contacto"
+        ubicacion.html-> <section id="ubicacion">   th:fragment="ubicacion"
+        footer.html   -> <footer>           th:fragment="footer"
+     El JS de la landing vive en static/JS/landing.js.
+     El CSS vive en static/CSS/landing/, un archivo por fragmento:
+        base.css      -> tokens, reset, utilidades y componentes comunes
+        header.css    -> .site-header / .site-nav
+        hero.css      -> .hero
+        servicios.css -> .servicio / .mosaic
+        pacientes.css -> .paciente / .paciente-modal
+        contacto.css  -> .canal / .form-card / .field
+        ubicacion.css -> .ubicacion / .datos / .mapa
+        footer.css    -> .site-footer
+     ============================================================================ -->
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <th:block th:replace="~{landing/head :: head}"></th:block>
+</head>
+
+<body>
+
+<a class="skip-link" href="#contenido">Ir al contenido principal</a>
+
+<div th:replace="~{landing/header :: header}"></div>
+
+<main id="contenido">
+
+    <div th:replace="~{landing/hero :: hero}"></div>
+
+    <div th:replace="~{landing/servicios :: servicios}"></div>
+
+    <div th:replace="~{landing/pacientes :: pacientes}"></div>
+
+    <div th:replace="~{landing/contacto :: contacto}"></div>
+
+    <div th:replace="~{landing/ubicacion :: ubicacion}"></div>
+
+</main>
+
+<div th:replace="~{landing/footer :: footer}"></div>
+
+<script th:src="@{/js/landing.js}" defer></script>
+
+</body>
+</html>

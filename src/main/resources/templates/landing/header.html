@@ -1,0 +1,42 @@
+<!-- ============================ ENCABEZADO ============================ -->
+<header class="site-header" th:fragment="header" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <div class="container site-header__inner">
+
+        <a class="brand" th:href="@{/}" aria-label="Pet'Salud, inicio">
+            <span class="brand__mark" aria-hidden="true">
+                <!-- Logo de la marca: static/img/logo.png -->
+                <img th:src="@{/img/logo.png}" alt="" width="45" height="45" decoding="async">
+            </span>
+            <span class="brand__name">Clínica Veterinaria Pet'Salud</span>
+        </a>
+
+        <button class="nav-toggle" id="navToggle" type="button"
+                aria-expanded="false" aria-controls="primaryNav"
+                aria-label="Abrir el menú de navegación">
+            <!-- Lucide: menu (ISC) -->
+            <svg class="lucide lucide-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M4 5h16"/>
+                <path d="M4 12h16"/>
+                <path d="M4 19h16"/>
+            </svg>
+        </button>
+
+        <!-- Panel del menú: en escritorio se disuelve (display:contents) para que
+             el nav quede alineado a la derecha de la fila, junto al logo.
+             En móvil vuelve a ser una caja y funciona como panel hamburguesa. -->
+        <div class="site-header__panel" id="primaryNav">
+
+            <nav class="site-nav" aria-label="Navegación principal">
+                <ul class="site-nav__list">
+                    <li><a class="site-nav__link" href="/inicio" data-nav>Inicio</a></li>
+                    <li><a class="site-nav__link" href="/servicios" data-nav>Servicios</a></li>
+                    <li><a class="site-nav__link" href="/pacientes" data-nav>Pacientes felices</a></li>
+                    <li><a class="site-nav__link" href="/contacto" data-nav>Contacto</a></li>
+                    <li><a class="site-nav__link" href="/ubicacion" data-nav>Ubicación</a></li>
+                </ul>
+            </nav>
+
+        </div>
+
+    </div>
+</header>

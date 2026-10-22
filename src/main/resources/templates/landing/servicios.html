@@ -1,0 +1,102 @@
+    <!-- ============================ SERVICIOS ============================ -->
+    <section class="section section--soft section--huellas section--foto" id="servicios" aria-labelledby="serviciosTitle" th:fragment="servicios" xmlns:th="http://www.thymeleaf.org">
+        <div class="container">
+
+            <div class="section__head">
+                <h2 class="section__title" id="serviciosTitle">Nuestros servicios</h2>
+                <p class="section__sub">Todo lo que tu mascota necesita, en un solo lugar.</p>
+            </div>
+
+            <!-- Mosaico: un <ul> con los 7 servicios. Cada <li> lleva su clase
+                 de posicion (c-consulta, c-vacunas, ...) y la rejilla define su
+                 tamano. El orden del HTML es el orden de lectura. -->
+            <ul class="mosaic">
+
+                <li class="servicio servicio--destacado c-consulta">
+
+                    <!-- Foto de la tarjeta: se revela al pasar el cursor -->
+                    <img class="servicio__foto" th:src="@{/img/servicios/consulta.webp}"
+                         alt="" aria-hidden="true" loading="lazy" decoding="async">
+
+                    <div class="servicio__texto">
+                        <h3 class="servicio__titulo">Consulta general</h3>
+                        <p class="servicio__desc">Revisión completa y orientación para el cuidado de tu mascota.</p>
+                    </div>
+                </li>
+
+                <li class="servicio c-tratamientos">
+
+                    <!-- Foto de la tarjeta: se revela al pasar el cursor -->
+                    <img class="servicio__foto" th:src="@{/img/servicios/tratamientos.webp}"
+                         alt="" aria-hidden="true" loading="lazy" decoding="async">
+
+                    <div class="servicio__texto">
+                        <h3 class="servicio__titulo">Tratamientos</h3>
+                        <p class="servicio__desc">Seguimiento y medicación según cada caso.</p>
+                    </div>
+                </li>
+
+                <li class="servicio c-vacunas">
+
+                    <!-- Foto de la tarjeta: se revela al pasar el cursor -->
+                    <img class="servicio__foto" th:src="@{/img/servicios/cavunas.webp}"
+                         alt="" aria-hidden="true" loading="lazy" decoding="async">
+
+                    <div class="servicio__texto">
+                        <h3 class="servicio__titulo">Vacunas</h3>
+                        <p class="servicio__desc">Esquema de vacunación para perros y gatos.</p>
+                    </div>
+                </li>
+
+                <li class="servicio c-laboratorio">
+
+                    <!-- Foto de la tarjeta: se revela al pasar el cursor -->
+                    <img class="servicio__foto" th:src="@{/img/servicios/laboratorio.webp}"
+                         alt="" aria-hidden="true" loading="lazy" decoding="async">
+
+                    <div class="servicio__texto">
+                        <h3 class="servicio__titulo">Exámenes de laboratorio</h3>
+                        <p class="servicio__desc">Análisis para un diagnóstico claro.</p>
+                    </div>
+                </li>
+
+                <li class="servicio c-profilaxis">
+
+                    <!-- Foto de la tarjeta: se revela al pasar el cursor -->
+                    <img class="servicio__foto" th:src="@{/img/servicios/profilaxis.webp}"
+                         alt="" aria-hidden="true" loading="lazy" decoding="async">
+
+                    <div class="servicio__texto">
+                        <h3 class="servicio__titulo">Profilaxis</h3>
+                        <p class="servicio__desc">Limpieza y prevención para su salud.</p>
+                    </div>
+                </li>
+
+                <li class="servicio c-cirugias">
+
+                    <!-- Foto de la tarjeta: se revela al pasar el cursor -->
+                    <img class="servicio__foto" th:src="@{/img/servicios/cirugias.webp}"
+                         alt="" aria-hidden="true" loading="lazy" decoding="async">
+
+                    <div class="servicio__texto">
+                        <h3 class="servicio__titulo">Cirugías</h3>
+                        <p class="servicio__desc">Procedimientos con cuidado y seguimiento.</p>
+                    </div>
+                </li>
+
+                <li class="servicio c-banos">
+
+                    <!-- Foto de la tarjeta: se revela al pasar el cursor -->
+                    <img class="servicio__foto" th:src="@{/img/servicios/banos.webp}"
+                         alt="" aria-hidden="true" loading="lazy" decoding="async">
+
+                    <div class="servicio__texto">
+                        <h3 class="servicio__titulo">Baños y/o cortes</h3>
+                        <p class="servicio__desc">Higiene y estética con trato cuidadoso.</p>
+                    </div>
+                </li>
+
+            </ul>
+
+        </div>
+    </section>

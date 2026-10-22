@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h2>Registrar veterinario</h2>
+
+<form th:action="@{/veterinarios/guardar}"
+      th:object="${veterinario}"
+      method="post" >
+
+    <label>nombre</label>
+    <input type="text" th:field="*{nombre}" required>
+    <br><br>
+
+    <label > Especialidad</label>
+    <input  type="text" th:field="*{especialidad}">
+    <br><br>
+
+    <label>telefono</label>
+    <input type="text" maxlength="9" th:field="*{telefono}">
+    <br><br>
+
+    <button type="submit"> guardar veterinario</button>
+
+
+</form>
+
+<a th:href="@{/veterinarios}"> ATRAS</a>
+
+</body>
+</html>

@@ -1,0 +1,36 @@
+.listar-citas{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.color-table,th,td {
+    border: none;
+
+}
+td{
+    border: solid 2px #626880;
+}
+
+.listar-citas h2{
+    color: #a5adce;
+    padding-bottom: 20px;
+    text-align: start;
+}
+
+
+.color-table th{
+    background-color: #414559;
+    color: #e6e9ef;
+
+}
+.color-table td{
+    background-color: #ccd0da;
+    border-top: 2px solid transparent;
+}
+.table>thead {
+    vertical-align: bottom;
+    text-align: center;
+}
+
+

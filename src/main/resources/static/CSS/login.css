@@ -1,0 +1,381 @@
+/* ============================================================================
+   PANTALLA DE INICIO DE SESIÓN · "Colita feliz"
+   Mismo lenguaje visual que el dashboard: teal #2A8C7A, fondo menta,
+   tarjetas blancas redondeadas y sombras suaves.
+   ============================================================================ */
+
+:root {
+    --teal: #2A8C7A;
+    --teal-dark: #1F6F61;
+    --mint: #EAF4F1;
+    --white: #FFFFFF;
+    --ink: #1F2D2B;
+    --muted: #6B7C79;
+    --border: #D5E3DF;
+    --error: #E5675B;
+
+    --radius-lg: 18px;
+    --radius-sm: 10px;
+
+    --shadow-card: 0 28px 64px -20px rgba(16, 54, 46, .38), 0 10px 26px -14px rgba(16, 54, 46, .22);
+    --transition: 180ms ease;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+.login-body {
+    min-height: 100vh;
+    margin: 0;
+    padding: 40px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow-x: hidden;
+
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: 15px;
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+
+    /* Degradado diagonal: menta claro -> verde azulado */
+    background: linear-gradient(135deg, #EAF4F1 0%, #A6D6CA 48%, #2A8C7A 100%);
+}
+
+/* ================================ DECORACIÓN ================================ */
+.login-deco {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.blob {
+    position: absolute;
+    border-radius: 50%;
+}
+
+.blob--1 {
+    width: 460px;
+    height: 460px;
+    top: -170px;
+    left: -150px;
+    background: radial-gradient(circle at 35% 35%, rgba(255, 255, 255, .8), rgba(255, 255, 255, 0) 70%);
+}
+
+.blob--2 {
+    width: 600px;
+    height: 600px;
+    right: -220px;
+    bottom: -260px;
+    background: radial-gradient(circle at 55% 40%, rgba(31, 111, 97, .5), rgba(31, 111, 97, 0) 70%);
+}
+
+.blob--3 {
+    width: 300px;
+    height: 300px;
+    top: 10%;
+    right: 6%;
+    background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, .55), rgba(255, 255, 255, 0) 70%);
+}
+
+.paw {
+    position: absolute;
+    color: rgba(255, 255, 255, .22);
+    fill: currentColor;
+}
+
+.paw--1 { width: 96px;  height: 96px;  top: 12%;  left: 9%;   transform: rotate(-18deg); }
+.paw--2 { width: 64px;  height: 64px;  top: 33%;  left: 20%;  transform: rotate(14deg);  color: rgba(255, 255, 255, .16); }
+.paw--3 { width: 120px; height: 120px; bottom: 12%; right: 12%; transform: rotate(22deg); color: rgba(255, 255, 255, .18); }
+.paw--4 { width: 72px;  height: 72px;  top: 18%;  right: 22%;  transform: rotate(-32deg); color: rgba(31, 111, 97, .22); }
+
+/* ================================== TARJETA ================================== */
+.login-card {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 450px;
+    padding: 40px;
+
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+
+    animation: cardIn 620ms cubic-bezier(.22, .9, .3, 1) both;
+}
+
+@keyframes cardIn {
+    from { opacity: 0; transform: translateY(26px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ================================== MARCA ================================== */
+.brand {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 12px;
+}
+
+.brand__logo {
+    width: 66px;
+    height: 66px;
+    border-radius: 50%;
+    box-shadow: 0 12px 24px -10px rgba(31, 111, 97, .6);
+}
+
+.brand__name {
+    margin: 0;
+    font-size: 26px;
+    font-weight: 800;
+    letter-spacing: -.02em;
+    color: var(--teal);
+}
+
+.brand__subtitle {
+    margin: 0;
+    font-size: 13.5px;
+    font-weight: 500;
+    color: var(--muted);
+}
+
+/* ================================ MENSAJES ================================ */
+.alert {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 22px;
+    padding: 11px 14px;
+    border-radius: var(--radius-sm);
+    font-size: 13.5px;
+    font-weight: 600;
+    animation: cardIn 400ms ease both;
+}
+
+.alert .icon { flex: none; }
+
+.alert--error {
+    background: #FDECE9;
+    border: 1px solid #F7D6CF;
+    color: #B23A24;
+}
+
+.alert--ok {
+    background: var(--mint);
+    border: 1px solid #CDE7E0;
+    color: var(--teal-dark);
+}
+
+/* ================================ FORMULARIO ================================ */
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 28px;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.field__label {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: var(--ink);
+}
+
+.control {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.control__icon {
+    position: absolute;
+    left: 13px;
+    width: 18px;
+    height: 18px;
+    color: #9FB3AF;
+    pointer-events: none;
+    transition: color var(--transition);
+}
+
+.control input {
+    width: 100%;
+    padding: 12.5px 14px 12.5px 42px;
+
+    font: inherit;
+    font-size: 14.5px;
+    color: var(--ink);
+
+    background: #F7FBFA;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    transition: border-color var(--transition), box-shadow var(--transition), background var(--transition);
+}
+
+.control input::placeholder { color: #A9BAB6; }
+
+.control input:focus {
+    outline: none;
+    border-color: var(--teal);
+    background: var(--white);
+    box-shadow: 0 0 0 4px rgba(42, 140, 122, .16);
+}
+
+.control:focus-within .control__icon { color: var(--teal); }
+
+/* --- Contraseña: hueco a la derecha para el botón del ojo --- */
+.control--password input { padding-right: 46px; }
+
+.toggle {
+    position: absolute;
+    right: 7px;
+    width: 32px;
+    height: 32px;
+    display: grid;
+    place-items: center;
+
+    border: none;
+    background: none;
+    border-radius: 8px;
+    color: #9FB3AF;
+    cursor: pointer;
+    transition: color var(--transition), background var(--transition);
+}
+
+.toggle:hover {
+    color: var(--teal);
+    background: var(--mint);
+}
+
+.toggle:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(42, 140, 122, .25);
+}
+
+.toggle .icon-off { display: none; }
+.toggle.is-visible .icon-eye { display: none; }
+.toggle.is-visible .icon-off { display: block; }
+
+/* ================================== BOTÓN ================================== */
+.btn-login {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    width: 100%;
+    margin-top: 6px;
+    padding: 13.5px 18px;
+
+    font: inherit;
+    font-size: 15px;
+    font-weight: 700;
+    color: #fff;
+    cursor: pointer;
+
+    background: linear-gradient(180deg, #2A8C7A 0%, #1F6F61 100%);
+    border: none;
+    border-radius: 11px;
+    box-shadow: 0 12px 22px -12px rgba(31, 111, 97, .85);
+    transition: transform var(--transition), box-shadow var(--transition), filter var(--transition);
+}
+
+.btn-login:hover {
+    transform: translateY(-1.5px);
+    filter: brightness(1.05);
+    box-shadow: 0 18px 30px -14px rgba(31, 111, 97, .9);
+}
+
+.btn-login:active { transform: translateY(0); }
+
+.btn-login:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(42, 140, 122, .28), 0 16px 28px -14px rgba(31, 111, 97, .9);
+}
+
+/* ================================ PIE DE TARJETA ================================ */
+.login-hint {
+    margin: 20px 0 0;
+    text-align: center;
+    font-size: 12.5px;
+    line-height: 1.65;
+    color: var(--muted);
+}
+
+/* ============================ BOTÓN DE CONFIGURACIÓN ============================ */
+.config-fab {
+    position: fixed;
+    right: 22px;
+    bottom: 22px;
+    z-index: 2;
+    width: 46px;
+    height: 46px;
+    display: grid;
+    place-items: center;
+
+    border: none;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, .92);
+    color: var(--teal-dark);
+    cursor: pointer;
+    box-shadow: 0 12px 26px -12px rgba(16, 54, 46, .65);
+    transition: transform var(--transition), background var(--transition), box-shadow var(--transition);
+}
+
+.config-fab:hover {
+    transform: translateY(-2px) rotate(-8deg);
+    background: var(--white);
+    box-shadow: 0 16px 30px -12px rgba(16, 54, 46, .75);
+}
+
+.config-fab:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(255, 255, 255, .6), 0 14px 28px -12px rgba(16, 54, 46, .7);
+}
+
+/* ================================= ICONOS ================================= */
+.icon {
+    width: 18px;
+    height: 18px;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    fill: none;
+}
+
+/* ================================ RESPONSIVE ================================ */
+@media (max-width: 520px) {
+    .login-body { padding: 16px; }
+
+    .login-card {
+        max-width: 100%;
+        padding: 28px 22px;
+        border-radius: 16px;
+    }
+
+    .brand__name { font-size: 23px; }
+    .brand__logo { width: 58px; height: 58px; }
+
+    .config-fab { right: 14px; bottom: 14px; width: 42px; height: 42px; }
+
+    .paw--1, .paw--3 { display: none; }
+}
+
+/* Respeta a quien prefiere menos movimiento */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: .001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .001ms !important;
+    }
+}

@@ -1,0 +1,35 @@
+    <!-- ============================== HERO ============================== -->
+    <section class="hero" id="inicio" aria-labelledby="heroTitle" th:fragment="hero" xmlns:th="http://www.thymeleaf.org">
+        <div class="container hero__grid">
+
+            <div class="hero__copy">
+
+                <h1 class="hero__title" id="heroTitle">Pet'Salud</h1>
+                <p class="hero__lead">
+                    Una clínica moderna con atención veterinaria de excelente nivel
+                    y precios accesibles. No somos una corporación: cada mascota
+                    la atiende el mismo equipo desde el primer día.
+                </p>
+
+                <div class="hero__actions">
+                    <a class="btn btn--primary" href="/contacto" data-cta="cita">
+                        Agendar cita
+                    </a>
+                </div>
+
+            </div>
+
+            <figure class="hero__figure">
+                <div class="hero__photo" id="heroPhoto">
+
+                    <!-- @data-foto="hero" · reemplaza por la foto real de una veterinaria
+                         y un veterinario atendiendo a un golden retriever -->
+                    <img src="https://images.unsplash.com/photo-1628009368231-7bb7cfcb0def?auto=format&fit=crop&w=1100&q=70"
+                         width="1100" height="1375" fetchpriority="high"
+                         alt="Veterinaria y veterinario de Pet'Salud atendiendo a un perro golden retriever en la sala de consulta">
+                </div>
+
+            </figure>
+
+        </div>
+    </section>

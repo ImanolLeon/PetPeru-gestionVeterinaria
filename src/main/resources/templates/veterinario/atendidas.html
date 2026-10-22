@@ -1,0 +1,43 @@
+<!-- =========================================================================
+     CITAS ATENDIDAS · Historial de citas completadas del veterinario (paginado)
+     Consume del modelo: citas (Page<Cita>)
+     ========================================================================= -->
+<div class="dashboard" xmlns:th="http://www.thymeleaf.org">
+
+    <section class="panel">
+        <div class="panel__head">
+            <h2 class="panel__title">Citas atendidas</h2>
+            <div class="panel__tools">
+                <a class="btn btn-secondary" th:href="@{/veterinarios/agenda}">Ver agenda</a>
+            </div>
+        </div>
+
+        <div class="table-wrap">
+            <table id="atendidasTable">
+                <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Mascota</th>
+                    <th>Estado</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="cita : ${citas.content}" data-row>
+                    <td th:text="${cita.fechaCita}">Fecha</td>
+                    <td th:text="${cita.mascota != null ? cita.mascota.nombre : '-'}">Mascota</td>
+                    <td th:text="${cita.estado}">Estado</td>
+                </tr>
+
+                <tr class="empty-row" th:if="${citas.totalElements == 0}">
+                    <td colspan="3">Todavía no has atendido ninguna cita.</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="panel__foot">
+            <span th:text="|Mostrando ${#lists.size(citas.content)} de ${citas.totalElements} citas|">Mostrando 0 de 0 citas</span>
+            <div th:replace="~{fragments/paginacion :: pager(${citas}, @{/veterinarios/atendidas}, 'page')}"></div>
+        </div>
+    </section>
+</div>

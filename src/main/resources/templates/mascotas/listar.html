@@ -1,0 +1,162 @@
+<!-- =========================================================================
+     LISTADO DE MASCOTAS · Cards con la paleta del panel
+     Cada card tiene: una zona clicable (.pet-card__main) que abre el modal
+     de detalle (#petDetailModal, lo rellena dashboard.js con los data-*) y
+     dos acciones superpuestas: editar (formulario) y eliminar (POST con el
+     modal de confirmación compartido #confirmModal).
+     ========================================================================= -->
+<div class="dashboard" xmlns:th="http://www.thymeleaf.org">
+
+    <section class="panel">
+        <div class="panel__head">
+            <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+                <h2 class="panel__title" th:text="|Mascotas de ${cliente.nombre} ${cliente.apellido}|">
+                    Mascotas del cliente
+                </h2>
+                <a class="btn btn--primary"
+                   th:href="@{/clientes/{id}/mascotas/nueva(id=${cliente.id})}">
+                    <svg class="icon"><use href="#i-plus"/></svg> Nueva mascota
+                </a>
+            </div>
+        </div>
+
+        <!-- Aviso de guardado correcto (flash) -->
+        <div th:if="${exito}" style="padding:18px 24px 0">
+            <div class="alert alert-success" role="alert" th:text="${exito}">Guardado</div>
+        </div>
+
+        <!-- Rejilla de cards -->
+        <div class="pet-grid">
+
+            <article class="pet-card" th:each="c : ${mascotas.content}">
+
+                <!-- Zona clicable: abre el modal de detalle -->
+                <button type="button" class="pet-card__main"
+                        data-bs-toggle="modal" data-bs-target="#petDetailModal"
+                        th:attr="data-nombre=${c.nombre},
+                                 data-especie=${c.especie},
+                                 data-raza=${c.raza},
+                                 data-sexo=${c.sexo},
+                                 data-edad=${c.edad},
+                                 data-peso=${c.peso},
+                                 data-imagen=${c.imagen},
+                                 data-cliente=${cliente.nombre + ' ' + cliente.apellido}"
+                        th:aria-label="|Ver datos de ${c.nombre}|">
+
+                    <span class="pet-card__media">
+                        <img th:if="${c.imagen}" th:src="@{${c.imagen}}" th:alt="${c.nombre}">
+                        <svg th:unless="${c.imagen}" class="icon pet-card__placeholder">
+                            <use href="#i-paw"/>
+                        </svg>
+                        <span class="pet-card__badge" th:text="${c.especie}">Especie</span>
+                    </span>
+
+                    <span class="pet-card__body">
+                        <span class="pet-card__name" th:text="${c.nombre}">Nombre</span>
+                        <span class="pet-card__sub"
+                              th:text="${c.raza != null and !c.raza.isEmpty() ? c.raza : 'Sin raza especificada'}">
+                            Raza
+                        </span>
+                        <span class="pet-card__meta">
+                            <span class="pet-chip">
+                                <svg class="icon"><use href="#i-paw"/></svg>
+                                <span th:text="${c.sexo != null and !c.sexo.isEmpty() ? c.sexo : '—'}">Sexo</span>
+                            </span>
+                            <span class="pet-chip" th:text="|${c.edad} años|">0 años</span>
+                        </span>
+                    </span>
+                </button>
+
+                <!-- Acciones: editar / eliminar -->
+                <div class="pet-card__actions">
+                    <a class="action"
+                       th:href="@{/clientes/{cid}/mascotas/{mid}/editar(cid=${cliente.id}, mid=${c.id})}"
+                       title="Editar"
+                       th:aria-label="|Editar ${c.nombre}|">
+                        <svg class="icon"><use href="#i-pencil"/></svg>
+                    </a>
+
+                    <form th:action="@{/clientes/{cid}/mascotas/{mid}/eliminar(cid=${cliente.id}, mid=${c.id})}"
+                          method="post">
+                        <button type="submit" class="action action--danger"
+                                data-confirm
+                                data-confirm-title="Eliminar mascota"
+                                data-confirm-label="Sí, eliminar"
+                                th:data-confirm-text="|¿Eliminar a ${c.nombre}?|"
+                                title="Eliminar"
+                                th:aria-label="|Eliminar ${c.nombre}|">
+                            <svg class="icon"><use href="#i-trash"/></svg>
+                        </button>
+                    </form>
+                </div>
+            </article>
+
+            <!-- Estado vacío -->
+            <div th:if="${mascotas.totalElements == 0}" class="pet-empty"
+                 style="grid-column:1/-1">
+                <svg class="icon" style="width:44px;height:44px;color:var(--teal-500)">
+                    <use href="#i-paw"/>
+                </svg>
+                <p style="margin-top:10px">Este cliente aún no tiene mascotas registradas.</p>
+                <a class="btn btn--primary"
+                   th:href="@{/clientes/{id}/mascotas/nueva(id=${cliente.id})}">
+                    <svg class="icon"><use href="#i-plus"/></svg> Registrar la primera
+                </a>
+            </div>
+        </div>
+
+        <div class="panel__foot">
+            <div style="display:flex;gap:10px;flex-wrap:wrap">
+                <a class="btn btn-secondary" th:href="@{/panel}">
+                    <svg class="icon"><use href="#i-chev-left"/></svg> Volver al inicio
+                </a>
+                <a class="btn btn-secondary" th:href="@{/clientes}">
+                    <svg class="icon"><use href="#i-user"/></svg> Volver a clientes
+                </a>
+            </div>
+            <div th:replace="~{fragments/paginacion :: pager(${mascotas}, @{/clientes/{id}/mascotas(id=${cliente.id})}, 'page')}"></div>
+        </div>
+    </section>
+
+    <!-- ===================== Modal: datos de la mascota ===================== -->
+    <div class="modal fade" id="petDetailModal" tabindex="-1"
+         aria-labelledby="petDetailTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title" id="petDetailTitle">Datos de la mascota</h2>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="Cerrar"></button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="pet-detail">
+                        <div class="pet-detail__media">
+                            <img id="pd-imagen" alt="" style="display:none">
+                            <svg id="pd-placeholder" class="icon"><use href="#i-paw"/></svg>
+                        </div>
+
+                        <div class="pet-detail__info">
+                            <h3 class="pet-detail__name" id="pd-nombre">—</h3>
+                            <p class="muted" id="pd-sub">—</p>
+
+                            <dl class="pet-detail__list">
+                                <div><dt>Especie</dt><dd id="pd-especie">—</dd></div>
+                                <div><dt>Raza</dt><dd id="pd-raza">—</dd></div>
+                                <div><dt>Sexo</dt><dd id="pd-sexo">—</dd></div>
+                                <div><dt>Edad</dt><dd id="pd-edad">—</dd></div>
+                                <div><dt>Peso</dt><dd id="pd-peso">—</dd></div>
+                                <div><dt>Dueño</dt><dd id="pd-cliente">—</dd></div>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary"
+                            data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

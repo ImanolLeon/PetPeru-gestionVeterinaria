@@ -1,0 +1,76 @@
+/* ============================================================================
+   FOOTER · LANDING PÚBLICA · PET'SALUD
+   ---------------------------------------------------------------------------
+   Pie de página de la landing.
+   Fragmento: src/main/resources/templates/landing/footer.html
+        <footer class="site-footer">  th:fragment="footer"
+
+   Cubre: la rejilla de tres columnas (marca + enlaces + acceso), los botones
+   de redes sociales y la barra legal.
+
+   La marca (.brand, .brand__mark, .brand__name) es compartida con el
+   header: vive en static/CSS/landing/base.css. Acá solo se la pisa con
+   las variantes .site-footer .brand* para el fondo teal.
+   ============================================================================ */
+
+/* =========================== FOOTER =========================== */
+.site-footer { background: var(--teal-900); color: var(--teal-50); padding: 68px 0 30px; }
+.site-footer__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr) minmax(0, 1fr);
+    gap: 44px;
+}
+.site-footer .brand { color: var(--white); }
+.site-footer .brand__name {
+    color: var(--white);
+    margin-left: revert-layer;}
+.site-footer__desc { margin-top: 16px; max-width: 42ch; font-size: .96rem; opacity: .9; }
+.site-footer h3 { font-size: 1.12rem; color: var(--white); margin-bottom: 16px; }
+.site-footer__links { display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px; }
+.site-footer__links a { color: var(--white); text-decoration: none; font-size: .97rem; overflow-wrap: anywhere; }
+.site-footer__links a:hover { text-decoration: underline; text-underline-offset: 3px; }
+.site-footer__social { display: flex; gap: 12px; margin-top: 14px; }
+.social-btn {
+    width: 44px; height: 44px;
+    display: grid; place-items: center;
+    border: 1px solid rgba(255, 255, 255, .5);
+    border-radius: var(--radius);
+    color: var(--white);
+    text-decoration: none;
+}
+.social-btn:hover { background: var(--white); color: var(--teal-900); }
+/* Iconos de Lucide: son de trazo, no rellenos */
+.social-btn svg {
+    width: 20px; height: 20px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+.site-footer__legal {
+    margin-top: 46px;
+    padding-top: 22px;
+    border-top: 1px solid rgba(255, 255, 255, .18);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 28px;
+    align-items: center;
+    justify-content: space-between;
+    font-size: .88rem;
+    opacity: .85;
+}
+.site-footer__legal-links { display: flex; flex-wrap: wrap; gap: 20px; }
+.site-footer__legal-links a { color: var(--white); }
+
+/* En el footer el foco se dibuja en blanco para que se vea sobre el teal. */
+.site-footer :focus-visible { outline-color: var(--white); }
+
+/* ========================= RESPONSIVE ========================= */
+@media (max-width: 1024px) {
+    .site-footer__grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+}
+
+@media (max-width: 700px) {
+    .site-footer__grid { grid-template-columns: minmax(0, 1fr); gap: 34px; }
+}

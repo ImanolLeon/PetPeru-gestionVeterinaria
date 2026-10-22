@@ -1,0 +1,252 @@
+/* ============================================================================
+   SERVICIOS · LANDING PÚBLICA · PET'SALUD
+   ---------------------------------------------------------------------------
+   Sección de servicios (mosaico de tarjetas).
+   Fragmento: src/main/resources/templates/landing/servicios.html
+        <section class="section section--soft section--huellas" id="servicios">
+        th:fragment="servicios"
+
+   Cubre: el mosaico de 7 servicios (rejilla de 12 columnas), la tarjeta
+   .servicio y el fondo con huellitas de la sección.
+   ============================================================================ */
+
+/* =========================== SERVICIOS =========================== */
+.servicio {
+    position: relative;
+    /* La foto de la tarjeta va SIEMPRE de fondo (ver .servicio__foto).
+       Este verde oscuro es solo el respaldo: si la imagen no llegara a
+       cargar, el texto en blanco seguiria leyéndose. */
+    background: var(--teal-900);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+}
+
+.servicio__icono {
+    display: grid;
+    place-items: center;
+    width: 52px;
+    height: 52px;
+    flex: 0 0 auto;
+    border-radius: var(--radius);
+    background: var(--teal-50);
+    color: var(--teal-700);
+}
+.servicio__icono svg { width: 26px; height: 26px; }
+
+/* El texto va siempre en blanco: esta sobre la foto, con el velo oscuro
+   oscureciendo la parte baja de la tarjeta. */
+.servicio__titulo {
+    font-size: 1.22rem;
+    color: var(--white);
+}
+.servicio__desc {
+    margin-top: 8px;
+    font-size: .97rem;
+    color: var(--teal-50);
+}
+
+/* Consulta general conserva su color propio (fondo verde oscuro). */
+.servicio--destacado {
+    background: var(--teal-900);
+    border-color: var(--teal-900);
+    color: var(--white);
+}
+.servicio--destacado .servicio__icono {
+    background: rgba(255, 255, 255, .14);
+    color: var(--teal-100);
+}
+.servicio--destacado .servicio__titulo { color: var(--white); }
+.servicio--destacado .servicio__desc { color: var(--teal-50); }
+
+/* La tarjeta destacada lleva un velo mas denso: asi sigue destacando
+   sobre las demas aunque las dos tengan foto de fondo. */
+.servicio--destacado::after {
+    background: linear-gradient(180deg,
+        rgba(27, 91, 78, .45) 0%,
+        rgba(27, 91, 78, .70) 45%,
+        rgba(27, 91, 78, .97) 100%);
+}
+
+/* ------------------------- FOTO DE LA TARJETA -------------------------
+   Cada servicio trae su foto (static/img/servicios/) y se ve SIEMPRE:
+   ocupa toda la tarjeta, con un velo oscuro encima para que el titulo y
+   la descripcion se lean en blanco. No hay estado hover. */
+.servicio__foto {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    pointer-events: none;
+}
+
+/* Velo: fuerte abajo (donde va el texto) y suave arriba (donde se ve
+   la foto). */
+.mosaic > li::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(180deg,
+        rgba(27, 91, 78, .28) 0%,
+        rgba(27, 91, 78, .55) 45%,
+        rgba(27, 91, 78, .92) 100%);
+    pointer-events: none;
+}
+
+/* El contenido de la tarjeta va por encima del velo. */
+.mosaic > li > .servicio__icono,
+.mosaic > li > .servicio__texto {
+    position: relative;
+    z-index: 2;
+}
+
+/* ------------------------- MOSAICO DE SERVICIOS -------------------------
+   Aqui solo cambia el LAYOUT. El <ul> es una rejilla de 12 columnas y cada
+   <li> lleva su clase de posicion (c-consulta, c-vacunas, ...). Los colores,
+   tipografias, iconos, bordes y sombras siguen siendo los de .servicio. */
+.mosaic {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-auto-rows: 60px;
+    gap: 16px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+/* Base de cada tarjeta: columna con el texto al pie. Al hacer hover la
+   foto ocupa toda la tarjeta y el texto queda sobre el velo oscuro. */
+.mosaic > li {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 22px;
+    overflow: hidden;
+}
+.mosaic .servicio__texto {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    min-width: 0;
+}
+
+/* Posicion de cada servicio en el mosaico (escritorio, mas de 900px). */
+.mosaic .c-consulta     { grid-column: 1 / 6;  grid-row: 1 / 6; padding: 32px; }
+.mosaic .c-tratamientos { grid-column: 6 / 10; grid-row: 1 / 3; }
+.mosaic .c-vacunas      { grid-column: 10 / 13; grid-row: 1 / 4; }
+.mosaic .c-laboratorio  { grid-column: 6 / 10; grid-row: 3 / 6; }
+.mosaic .c-profilaxis   { grid-column: 10 / 13; grid-row: 4 / 6; }
+.mosaic .c-cirugias     { grid-column: 1 / 8;  grid-row: 6 / 8; }
+.mosaic .c-banos        { grid-column: 8 / 13; grid-row: 6 / 8; }
+
+/* Jerarquia: en Consulta general el icono y el titulo son mas grandes. */
+.mosaic .c-consulta .servicio__icono { width: 72px; height: 72px; }
+.mosaic .c-consulta .servicio__icono svg { width: 34px; height: 34px; }
+.mosaic .c-consulta .servicio__titulo { font-size: 1.6rem; }
+.mosaic .c-consulta .servicio__cta { margin-top: 18px; }
+
+/* Los dos bloques anchos de abajo: el texto va a la izquierda, centrado
+   verticalmente. */
+.mosaic .c-cirugias,
+.mosaic .c-banos {
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 20px;
+}
+
+/* --- Fondo con huellitas de la sección --- */
+/* Mismo patron de huellitas que el hero (--huellas). Este archivo se carga
+   DESPUÉS de base.css, donde vive .section--soft, para que el fondo no lo
+   pise con el atajo 'background'. */
+.section--huellas {
+    background-image: var(--huellas);
+    background-repeat: repeat;
+    background-size: 380px 380px;
+}
+
+/* --- Fondo fotográfico de la sección --- */
+/* Tres capas (de arriba hacia abajo):
+     1. las huellitas de la marca,
+     2. un lavado verde claro que mantiene legible el título,
+     3. la foto de la clínica.
+   La URL es relativa a esta hoja (/css/landing/servicios.css), así que
+   resuelve a /img/servicios/... y no se rompe si la app usa un context path. */
+.section--foto {
+
+    background-size: 380px 380px, auto, cover;
+    background-position: 0 0, 0 0, center center;
+    background-repeat: repeat, no-repeat, no-repeat;
+}
+
+/* ========================= RESPONSIVE ========================= */
+@media (max-width: 700px) {
+    .servicio--destacado .servicio__cta { width: 100%; }
+}
+
+/* Mosaico de servicios: dos columnas entre 561px y 900px. Se anula la
+   posicion del mosaico de escritorio y las tarjetas anchas ocupan el ancho
+   completo. */
+@media (max-width: 900px) and (min-width: 561px) {
+    .mosaic {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-auto-rows: auto;
+    }
+    .mosaic > li { min-height: 150px}
+    .mosaic .c-consulta,
+    .mosaic .c-tratamientos,
+    .mosaic .c-vacunas,
+    .mosaic .c-laboratorio,
+    .mosaic .c-profilaxis,
+    .mosaic .c-cirugias,
+    .mosaic .c-banos {
+        grid-column: auto;
+        grid-row: auto;
+    }
+    .mosaic .c-consulta,
+    .mosaic .c-cirugias,
+    .mosaic .c-banos {
+        grid-column: 1 / -1;
+    }
+    .mosaic .c-consulta { min-height: 300px; }
+}
+
+/* Mosaico de servicios: una sola columna por debajo de 560px. */
+@media (max-width: 560px) {
+    .mosaic {
+        grid-template-columns: minmax(0, 1fr);
+        grid-auto-rows: auto;
+    }
+    .mosaic > li { min-height: 0; }
+    .mosaic .c-consulta,
+    .mosaic .c-tratamientos,
+    .mosaic .c-vacunas,
+    .mosaic .c-laboratorio,
+    .mosaic .c-profilaxis,
+    .mosaic .c-cirugias,
+    .mosaic .c-banos {
+        grid-column: auto;
+        grid-row: auto;
+    }
+    /* Cirugias y Banos vuelven a columna: el texto vuelve al pie. */
+    .mosaic .c-cirugias,
+    .mosaic .c-banos {
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: flex-end;
+        gap: 14px;
+    }
+}
+li.servicio.servicio--destacado.c-consulta {
+    border: none;
+}
+
+/* ----------------------- PANTALLAS TÁCTILES ----------------------- */
+/* No hay estado hover: la foto se ve siempre, igual en celular que en
+   escritorio. */

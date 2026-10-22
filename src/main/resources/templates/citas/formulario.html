@@ -1,0 +1,85 @@
+<!-- =========================================================================
+     NUEVA CITA · Formulario llamativo, respetando la paleta verde del panel
+     ========================================================================= -->
+<div class="panel" xmlns:th="http://www.thymeleaf.org">
+
+    <div class="panel__head">
+        <h2 class="panel__title">Registrar nueva cita</h2>
+    </div>
+
+    <div class="modal-body p-4">
+
+        <!-- Alertas -->
+        <div th:if="${error}" class="alert alert-danger" role="alert">
+            <span th:text="${error}"></span>
+        </div>
+
+        <div th:if="${exito}" class="alert alert-success" role="alert">
+            <span th:text="${exito}"></span>
+        </div>
+
+        <form th:action="@{/citas/guardar}"
+              th:object="${cita}"
+              method="post">
+
+            <div class="contenedor">
+                <!-- Mascota -->
+                <div>
+                    <label for="mascotaId">Mascota *</label>
+                    <select class="form-select" id="mascotaId" name="mascotaId" required>
+                        <option value="">Seleccione una mascota</option>
+                        <option th:each="m : ${mascotas}"
+                                th:value="${m.id}"
+                                th:text="${m.nombre}">
+                        </option>
+                    </select>
+                </div>
+
+                <!-- Veterinario -->
+                <div>
+                    <label for="veterinarioId">Veterinario *</label>
+                    <select class="form-select" id="veterinarioId" name="veterinarioId" required>
+                        <option value="">Seleccione un veterinario</option>
+                        <option th:each="v : ${veterinarios}"
+                                th:value="${v.id}"
+                                th:text="${v.nombre}">
+                        </option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="contenedor mt-3">
+                <!-- Fecha -->
+                <div>
+                    <label for="fechaCita">Fecha *</label>
+                    <input class="form-control" id="fechaCita" type="date"
+                           th:field="*{fechaCita}" required>
+                </div>
+
+                <!-- Hora -->
+                <div>
+                    <label for="horaCita">Hora *</label>
+                    <input class="form-control" id="horaCita" type="time"
+                           th:field="*{horaCita}" required>
+                </div>
+            </div>
+
+            <!-- Motivo -->
+            <div class="mt-3">
+                <label for="motivo">Motivo de la cita *</label>
+                <textarea class="form-control" id="motivo" rows="4"
+                          th:field="*{motivo}" required
+                          placeholder="Describa brevemente el motivo de la consulta..."></textarea>
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center mt-4">
+                <a class="btn btn-secondary" th:href="@{/citas}">
+                    <svg class="icon"><use href="#i-chev-left"/></svg> Volver al listado
+                </a>
+                <button type="submit" class="btn btn--primary">
+                    <svg class="icon"><use href="#i-plus-circle"/></svg> Registrar cita
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

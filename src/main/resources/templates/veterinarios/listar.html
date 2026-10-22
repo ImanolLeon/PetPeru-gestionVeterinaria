@@ -1,0 +1,50 @@
+<!-- =========================================================================
+     LISTADO DE VETERINARIOS · Estilo coherente con el dashboard
+     Se inserta desde layout/base.html con: th:replace="~{${contenido}}"
+     Consume del modelo: veterinarios (Page), veterinarioService.
+     ========================================================================= -->
+<div class="dashboard" xmlns:th="http://www.thymeleaf.org">
+
+    <section class="panel">
+        <div class="panel__head">
+            <h2 class="panel__title">Veterinarios</h2>
+            <div class="panel__tools">
+                <a class="btn btn--primary" th:href="@{/veterinarios/nuevo}">
+                    <svg class="icon"><use href="#i-plus"/></svg> Nuevo veterinario
+                </a>
+            </div>
+        </div>
+
+        <div class="table-wrap">
+            <table id="vetsTable">
+                <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Especialidad</th>
+                    <th>Teléfono</th>
+                    <th>Citas pendientes</th>
+                    <th>Disponibilidad</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="c : ${veterinarios.content}" data-row>
+                    <td th:text="${c.nombre}">Nombre</td>
+                    <td th:text="${c.especialidad}">Especialidad</td>
+                    <td th:text="${c.telefono}">Teléfono</td>
+                    <td th:text="${veterinarioService.contarCitas(c.id)}">0</td>
+                    <td th:text="${veterinarioService.disponibilidadHoy(c.id)}">Disponible</td>
+                </tr>
+
+                <tr class="empty-row" th:if="${veterinarios.totalElements == 0}">
+                    <td colspan="5">Aún no hay veterinarios registrados.</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="panel__foot">
+            <span th:text="|Mostrando ${#lists.size(veterinarios.content)} de ${veterinarios.totalElements} veterinarios|">Mostrando 0 de 0 veterinarios</span>
+            <div th:replace="~{fragments/paginacion :: pager(${veterinarios}, @{/veterinarios}, 'page')}"></div>
+        </div>
+    </section>
+</div>

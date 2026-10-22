@@ -1,0 +1,328 @@
+<!-- =========================================================================
+     DASHBOARD · Contenido de la página de inicio ("home/home")
+     Se inserta desde layout/base.html con: th:replace="~{${contenido}}"
+     Consume del modelo: clientes, contarMascota, contarCliente, contarCitas.
+     ========================================================================= -->
+<div class="dashboard" xmlns:th="http://www.thymeleaf.org"
+     xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+    <!-- Aviso tras guardar un cliente (flash) -->
+    <div th:if="${exito}">
+        <div class="alert alert-success" role="alert" th:text="${exito}">Guardado</div>
+    </div>
+
+    <!-- ===================== Banner de bienvenida ===================== -->
+    <section class="banner">
+        <div class="banner__body">
+            <p class="banner__eyebrow">Bienvenido,</p>
+            <h1 class="banner__title">Imanol</h1>
+            <p class="banner__subtitle">Gestiona tus clientes, citas y agenda fácilmente.</p>
+
+            <!-- Galería: muestra las imágenes de static/img en un carrusel -->
+            <button class="btn btn--primary banner__cta" type="button"
+                    data-bs-toggle="modal" data-bs-target="#galeriaModal"
+                    th:unless="${#lists.isEmpty(galeria)}">
+                <svg class="icon"><use href="#i-image"/></svg>
+                Ver imágenes
+            </button>
+        </div>
+
+        <!-- Ilustración vectorial: perro blanco con collar y gato teal -->
+        <svg class="banner__art" viewBox="0 0 280 180" role="img"
+             aria-label="Ilustración de un perro y un gato sentados juntos">
+            <!-- manchas decorativas de fondo -->
+            <circle cx="52" cy="44" r="26" fill="#CDE9E1" opacity=".7"/>
+            <circle cx="298" cy="52" r="15" fill="#CDE9E1" opacity=".7"/>
+            <circle cx="300" cy="182" r="30" fill="#DCEFE9" opacity=".85"/>
+            <circle cx="30" cy="176" r="13" fill="#DCEFE9" opacity=".85"/>
+            <path d="M22 108c-9 0-16-7-16-16s7-16 16-16" stroke="#CDE9E1" stroke-width="6"
+                  stroke-linecap="round" fill="none"/>
+            <!-- sombra del suelo -->
+            <ellipse cx="140" cy="160" rx="95" ry="9" fill="#BFE0D7" opacity=".5"/>
+
+            <!-- PERRO (blanco, collar coral) -->
+            <g>
+                <ellipse cx="112" cy="130" rx="35" ry="37" fill="#FFFFFF" stroke="#E4EFEB" stroke-width="1.6"/>
+                <ellipse cx="86" cy="82" rx="10" ry="20" fill="#FFFFFF" stroke="#E4EFEB" stroke-width="1.6"
+                         transform="rotate(-20 86 82)"/>
+                <ellipse cx="138" cy="82" rx="10" ry="20" fill="#FFFFFF" stroke="#E4EFEB" stroke-width="1.6"
+                         transform="rotate(20 138 82)"/>
+                <circle cx="112" cy="88" r="29" fill="#FFFFFF" stroke="#E4EFEB" stroke-width="1.6"/>
+                <ellipse cx="112" cy="98" rx="14" ry="10" fill="#F4FAF8"/>
+                <circle cx="112" cy="94" r="4.2" fill="#33413D"/>
+                <path d="M112 98v4m0 0c0 2.4-2.4 4-4.6 3.2M112 102c0 2.4 2.4 4 4.6 3.2"
+                      stroke="#33413D" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+                <circle cx="102" cy="80" r="2.8" fill="#33413D"/>
+                <circle cx="122" cy="80" r="2.8" fill="#33413D"/>
+                <rect x="92" cy="110" width="40" height="11" rx="5.5" fill="#F0927E"/>
+                <circle cx="112" cy="127" r="4.8" fill="#F6C453" stroke="#E9B23F" stroke-width="1.2"/>
+            </g>
+
+            <!-- GATO (teal) -->
+            <g>
+                <path d="M208 145c19 5 29-7 24-23" stroke="#2A8C7A" stroke-width="8"
+                      stroke-linecap="round" fill="none"/>
+                <path d="M166 82 161 58l18 12Z" fill="#2A8C7A"/>
+                <path d="M198 82 203 58l-18 12Z" fill="#2A8C7A"/>
+                <path d="M167 80 164 66l11 8Z" fill="#6FC0AF"/>
+                <path d="M197 80 200 66l-11 8Z" fill="#6FC0AF"/>
+                <ellipse cx="182" cy="132" rx="28" ry="31" fill="#2A8C7A"/>
+                <circle cx="182" cy="98" r="23" fill="#2A8C7A"/>
+                <circle cx="173" cy="96" r="2.6" fill="#0F3B33"/>
+                <circle cx="191" cy="96" r="2.6" fill="#0F3B33"/>
+                <path d="M182 100l-3-4h6Z" fill="#F0927E"/>
+                <path d="M182 100v3m0 0c0 1.9-1.9 3.2-3.7 2.6M182 103c0 1.9 1.9 3.2 3.7 2.6"
+                      stroke="#0F3B33" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+                <path d="M162 98h-7M163 102l-6 2M202 98h7M201 102l6 2"
+                      stroke="#6FC0AF" stroke-width="1.5" stroke-linecap="round"/>
+            </g>
+        </svg>
+    </section>
+
+    <!-- ===================== Galería de imágenes =====================
+         Carrusel con las fotos de static/img (GaleriaService).
+         Abre el botón "Ver imágenes" del banner; flechas y puntos solo
+         aparecen si hay más de una imagen. -->
+    <div class="modal fade gallery" id="galeriaModal" tabindex="-1"
+         aria-labelledby="galeriaTitulo" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h2 class="modal-title" id="galeriaTitulo">Imágenes</h2>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+
+                <div class="modal-body">
+                    <div id="galeriaCarrusel" class="carousel slide">
+                        <div class="carousel-inner">
+                            <div class="carousel-item" th:each="ruta, it : ${galeria}"
+                                 th:classappend="${it.first} ? 'active'">
+                                <img class="d-block w-100" th:src="${ruta}"
+                                     th:alt="|Imagen ${it.count} de ${#lists.size(galeria)}|">
+                            </div>
+                        </div>
+
+                        <button class="carousel-control-prev" type="button"
+                                data-bs-target="#galeriaCarrusel" data-bs-slide="prev"
+                                th:if="${#lists.size(galeria) > 1}">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Anterior</span>
+                        </button>
+                        <button class="carousel-control-next" type="button"
+                                data-bs-target="#galeriaCarrusel" data-bs-slide="next"
+                                th:if="${#lists.size(galeria) > 1}">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Siguiente</span>
+                        </button>
+                    </div>
+
+                    <div class="carousel-indicators" th:if="${#lists.size(galeria) > 1}">
+                        <button type="button" th:each="ruta, it : ${galeria}"
+                                data-bs-target="#galeriaCarrusel"
+                                th:data-bs-slide-to="${it.index}"
+                                th:classappend="${it.first} ? 'active'"
+                                th:aria-current="${it.first}"
+                                th:aria-label="|Ir a la imagen ${it.count}|"></button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================== Tarjetas de estadísticas ===================== -->
+    <section class="stats" aria-label="Resumen">
+        <article class="stat stat--green">
+            <div class="stat__top">
+                <p class="stat__label">Clientes (Mascotas)</p>
+            </div>
+            <div class="stat__center">
+                <div class="stat__icon"><svg class="icon"><use href="#i-paw"/></svg></div>
+                <p class="stat__value" th:text="${contarMascota}">0</p>
+            </div>
+            <p class="stat__hint">Total registrados</p>
+        </article>
+
+        <article class="stat stat--blue">
+            <div class="stat__top">
+                <p class="stat__label">Clientes (Personas)</p>
+            </div>
+            <div class="stat__center">
+                <div class="stat__icon"><svg class="icon"><use href="#i-user"/></svg></div>
+                <p class="stat__value" th:text="${contarCliente}">0</p>
+            </div>
+            <p class="stat__hint">Total registrados</p>
+        </article>
+
+        <article class="stat stat--lilac">
+            <div class="stat__top">
+                <p class="stat__label">Citas programadas</p>
+            </div>
+            <div class="stat__center">
+                <div class="stat__icon"><svg class="icon"><use href="#i-calendar"/></svg></div>
+                <p class="stat__value" th:text="${contarCitas}">0</p>
+            </div>
+            <p class="stat__hint">Próximas citas</p>
+        </article>
+    </section>
+
+    <!-- ===================== Listado de clientes ===================== -->
+    <section class="panel">
+        <div class="panel__head">
+            <h2 class="panel__title">Listado de clientes</h2>
+            <div class="panel__tools">
+                <label class="search">
+                    <svg class="icon"><use href="#i-search"/></svg>
+                    <input type="search" id="clientSearch" placeholder="Buscar cliente..."
+                           aria-label="Buscar cliente">
+                </label>
+                <button class="btn btn--primary" type="button"
+                        data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    <svg class="icon"><use href="#i-plus"/></svg> Nuevo cliente
+                </button>
+            </div>
+        </div>
+
+        <div class="table-wrap">
+            <table id="clientsTable">
+                <thead>
+                <tr>
+                    <th>Cliente</th>
+                    <th>Apellido</th>
+                    <th>Email</th>
+                    <th>Teléfono</th>
+                    <th>Mascotas</th>
+                    <th style="text-align:right">Acciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!-- Fila por cada cliente del modelo (página actual) -->
+                <tr th:each="c : ${clientes.content}" data-row>
+                    <td>
+                        <div class="client">
+                            <div class="client__avatar"
+                                 th:with="ini=${(#strings.isEmpty(c.nombre) ? '' : #strings.substring(c.nombre,0,1))
+                                               + (#strings.isEmpty(c.apellido) ? '' : #strings.substring(c.apellido,0,1))}"
+                                 th:text="${#strings.toUpperCase(ini)}">--</div>
+                            <span class="client__name" th:text="${c.nombre}">Nombre</span>
+                        </div>
+                    </td>
+                    <td th:text="${c.apellido}">Apellido</td>
+                    <td class="muted" th:text="${c.email}">email</td>
+                    <td th:text="${c.telefono}">Teléfono</td>
+                    <td>
+                        <span class="pet-badge">
+                            <svg class="icon"><use href="#i-paw"/></svg>
+                            <span th:text="${#lists.size(c.mascotas)}">0</span>
+                        </span>
+                    </td>
+                    <td>
+                        <div class="actions">
+                            <!-- Ver mascotas del cliente -->
+                            <a class="action" th:href="@{/clientes/{id}/mascotas(id=${c.id})}"
+                               th:aria-label="|Ver mascotas de ${c.nombre}|">
+                                <svg class="icon"><use href="#i-eye"/></svg>
+                            </a>
+                            <!-- Editar cliente: abre el modal con sus datos -->
+                            <button class="action" type="button"
+                                    data-bs-toggle="modal" data-bs-target="#editClienteModal"
+                                    th:attr="data-id=${c.id},
+                                             data-dni=${c.dni},
+                                             data-nombre=${c.nombre},
+                                             data-apellido=${c.apellido},
+                                             data-email=${c.email},
+                                             data-telefono=${c.telefono},
+                                             data-direccion=${c.direccion}"
+                                    th:aria-label="|Editar ${c.nombre}|">
+                                <svg class="icon"><use href="#i-pencil"/></svg>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+
+                <!-- Estado vacío -->
+                <tr class="empty-row" th:if="${clientes.totalElements == 0}">
+                    <td colspan="6">Aún no hay clientes registrados. Usa «Nuevo cliente» para añadir el primero.</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="panel__foot">
+            <span id="tableSummary"
+                  th:text="|Mostrando ${#lists.size(clientes.content)} de ${clientes.totalElements} clientes|">Mostrando 0 de 0 clientes</span>
+            <div th:replace="~{fragments/paginacion :: pager(${clientes}, @{/panel}, 'page')}"></div>
+        </div>
+    </section>
+
+    <!-- Modal "Registrar cliente" reutilizado desde clientes/formulario -->
+    <div th:replace="~{clientes/formulario :: modalCliente}"></div>
+
+    <!-- ===================== Modal editar cliente ===================== -->
+    <!-- Los campos se rellenan con JS a partir de los data-* del botón (ver dashboard.js) -->
+    <div class="modal fade" id="editClienteModal" tabindex="-1"
+         aria-labelledby="editClienteModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title" id="editClienteModalLabel">Editar cliente</h2>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="Cerrar"></button>
+                </div>
+
+                <form id="editClienteForm" th:action="@{/clientes/editar}" method="post">
+                    <!-- Identificador del cliente que se está editando -->
+                    <input type="hidden" id="edit-id" name="id" th:value="${clienteEditado?.id}">
+
+                    <div class="modal-body">
+                        <div class="contenedor">
+                            <div>
+                                <label for="edit-nombre">Nombre *</label>
+                                <input type="text" id="edit-nombre" name="nombre" required
+                                       th:value="${clienteEditado?.nombre}">
+
+                                <label for="edit-dni">DNI *</label>
+                                <input type="text" id="edit-dni" name="dni" maxlength="8" required
+                                       th:value="${clienteEditado?.dni}">
+                                <small class="field-error" id="editDniError" th:if="${errorDniEdit}"
+                                       th:text="${errorDniEdit}">Error</small>
+
+                                <label for="edit-apellido">Apellidos</label>
+                                <input type="text" id="edit-apellido" name="apellido"
+                                       th:value="${clienteEditado?.apellido}">
+                            </div>
+                            <div>
+                                <label for="edit-telefono">Teléfono</label>
+                                <input type="text" id="edit-telefono" name="telefono" maxlength="9"
+                                       th:value="${clienteEditado?.telefono}">
+
+                                <label for="edit-email">Email</label>
+                                <input type="email" id="edit-email" name="email"
+                                       th:value="${clienteEditado?.email}">
+
+                                <label for="edit-direccion">Dirección</label>
+                                <input type="text" id="edit-direccion" name="direccion"
+                                       th:value="${clienteEditado?.direccion}">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn--primary">Guardar cambios</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Si el servidor rechazó el DNI, se reabre el modal con lo escrito -->
+    <script th:if="${abrirModalEditar}">
+        document.addEventListener('DOMContentLoaded', function () {
+            if (typeof bootstrap === 'undefined') return;
+            bootstrap.Modal.getOrCreateInstance(document.getElementById('editClienteModal')).show();
+        });
+    </script>
+
+</div>
