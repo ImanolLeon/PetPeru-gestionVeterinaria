@@ -63,8 +63,9 @@ public class HttpSecurityConfig {
                     auth.requestMatchers(rutasLanding)
                             .permitAll();
                     auth.requestMatchers("/login", "/error",
-                                    "/css/**", "/js/**", "/images/**", "/img/**")
-                            .permitAll();
+                            "/css/**", "/CSS/**",
+                            "/js/**", "/JS/**",
+                            "/images/**", "/img/**").permitAll();
 
                     // ADMIN
                     auth.requestMatchers("/panel/**")
