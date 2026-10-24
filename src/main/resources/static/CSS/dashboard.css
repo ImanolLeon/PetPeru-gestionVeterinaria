@@ -55,6 +55,9 @@
   --gap:22px;
   --font:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
   --transition:180ms cubic-bezier(.4,0,.2,1);
+  /* Patrón de huellitas igual al hero de la landing */
+  --huellas: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 380 380'%3E%3Cg fill='%231B5B4E' fill-opacity='0.07'%3E%3Cg transform='translate(230,70) rotate(22) scale(1.25)'%3E%3Cellipse cx='32' cy='44' rx='14' ry='11.5'/%3E%3Cellipse cx='12' cy='25' rx='6' ry='8' transform='rotate(-30 12 25)'/%3E%3Cellipse cx='25' cy='12' rx='6' ry='8' transform='rotate(-9 25 12)'/%3E%3Cellipse cx='41' cy='12' rx='6' ry='8' transform='rotate(9 41 12)'/%3E%3Cellipse cx='53' cy='25' rx='6' ry='8' transform='rotate(30 53 25)'/%3E%3C/g%3E%3Cg transform='translate(110,210) rotate(8) scale(1.4)'%3E%3Cellipse cx='32' cy='44' rx='14' ry='11.5'/%3E%3Cellipse cx='12' cy='25' rx='6' ry='8' transform='rotate(-30 12 25)'/%3E%3Cellipse cx='25' cy='12' rx='6' ry='8' transform='rotate(-9 25 12)'/%3E%3Cellipse cx='41' cy='12' rx='6' ry='8' transform='rotate(9 41 12)'/%3E%3Cellipse cx='53' cy='25' rx='6' ry='8' transform='rotate(30 53 25)'/%3E%3C/g%3E%3Cg transform='translate(280,270) rotate(-28) scale(1.1)'%3E%3Cellipse cx='32' cy='44' rx='14' ry='11.5'/%3E%3Cellipse cx='12' cy='25' rx='6' ry='8' transform='rotate(-30 12 25)'/%3E%3Cellipse cx='25' cy='12' rx='6' ry='8' transform='rotate(-9 25 12)'/%3E%3Cellipse cx='41' cy='12' rx='6' ry='8' transform='rotate(9 41 12)'/%3E%3Cellipse cx='53' cy='25' rx='6' ry='8' transform='rotate(30 53 25)'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  --banner-fondo: url("../img/banner/fondo_banner.jpg");
 }
 
 /* ------------------------------ Reset / base ------------------------------ */
@@ -79,9 +82,21 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
 
 /* ------------------------------ Layout raíz ------------------------------ */
 .app{display:flex;min-height:100vh}
-.main{flex:1;min-width:0;display:flex;flex-direction:column}
+.main{flex:1;min-width:0;display:flex;flex-direction:column;background:var(--teal-50);position:relative}
+.main::before{
+  content:"";
+  position:fixed;
+  inset:0 0 0 var(--sidebar-w);
+  pointer-events:none;
+  z-index:0;
+  background-image:var(--huellas);
+  background-repeat:repeat;
+  background-size:380px 380px;
+  opacity:1;
+}
+.topbar,.content{position:relative;z-index:1}
 .content{padding:0}
-.container{max-width:1200px;width:100%;margin:0 auto;padding:24px 32px}
+.container{max-width:1200px;width:100%;margin:0 auto;padding:0 32px}
 .dashboard{display:flex;flex-direction:column;gap:var(--gap)}
 
 /* ================================ SIDEBAR ================================ */
@@ -153,16 +168,17 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
 
 /* ============================ BANNER BIENVENIDA ============================ */
 .banner{
-  background:var(--mint);border:1px solid var(--border-strong);border-radius:var(--radius-lg);
+  background:var(--teal-600);;border:1px solid var(--border-strong);border-radius:var(--radius-lg);
   padding:28px 32px;box-shadow:var(--shadow-sm);overflow:hidden;position:relative;
   display:flex;align-items:center;gap:24px;
+  background-image: linear-gradient(to right, var(--teal-600) 0%, transparent 67%), var(--banner-fondo);
 }
 .banner__wave{
   width:56px;height:56px;border-radius:50%;flex:none;background:var(--white);
   display:grid;place-items:center;font-size:26px;box-shadow:var(--shadow-sm);
 }
 .banner__body{min-width:0;flex:1}
-.banner__eyebrow{color:var(--teal-600);font-weight:700;font-size:13px;letter-spacing:.14em;
+.banner__eyebrow{color:var(--white);font-weight:700;font-size:13px;letter-spacing:.14em;
   text-transform:uppercase;margin-bottom:4px}
 .banner__title{font-size:34px;font-weight:800;letter-spacing:-.01em;color:var(--ink-900)}
 .banner__subtitle{color:var(--ink-500);font-size:16px;margin-top:2px}

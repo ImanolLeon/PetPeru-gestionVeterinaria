@@ -14,124 +14,12 @@
     <!-- ===================== Banner de bienvenida ===================== -->
     <section class="banner">
         <div class="banner__body">
-            <p class="banner__eyebrow">Bienvenido,</p>
+            <p class="banner__eyebrow">Bienvenido</p>
             <h1 class="banner__title">Imanol</h1>
-            <p class="banner__subtitle">Gestiona tus clientes, citas y agenda fácilmente.</p>
-
-            <!-- Galería: muestra las imágenes de static/img en un carrusel -->
-            <button class="btn btn--primary banner__cta" type="button"
-                    data-bs-toggle="modal" data-bs-target="#galeriaModal"
-                    th:unless="${#lists.isEmpty(galeria)}">
-                <svg class="icon"><use href="#i-image"/></svg>
-                Ver imágenes
-            </button>
         </div>
-
-        <!-- Ilustración vectorial: perro blanco con collar y gato teal -->
-        <svg class="banner__art" viewBox="0 0 280 180" role="img"
-             aria-label="Ilustración de un perro y un gato sentados juntos">
-            <!-- manchas decorativas de fondo -->
-            <circle cx="52" cy="44" r="26" fill="#CDE9E1" opacity=".7"/>
-            <circle cx="298" cy="52" r="15" fill="#CDE9E1" opacity=".7"/>
-            <circle cx="300" cy="182" r="30" fill="#DCEFE9" opacity=".85"/>
-            <circle cx="30" cy="176" r="13" fill="#DCEFE9" opacity=".85"/>
-            <path d="M22 108c-9 0-16-7-16-16s7-16 16-16" stroke="#CDE9E1" stroke-width="6"
-                  stroke-linecap="round" fill="none"/>
-            <!-- sombra del suelo -->
-            <ellipse cx="140" cy="160" rx="95" ry="9" fill="#BFE0D7" opacity=".5"/>
-
-            <!-- PERRO (blanco, collar coral) -->
-            <g>
-                <ellipse cx="112" cy="130" rx="35" ry="37" fill="#FFFFFF" stroke="#E4EFEB" stroke-width="1.6"/>
-                <ellipse cx="86" cy="82" rx="10" ry="20" fill="#FFFFFF" stroke="#E4EFEB" stroke-width="1.6"
-                         transform="rotate(-20 86 82)"/>
-                <ellipse cx="138" cy="82" rx="10" ry="20" fill="#FFFFFF" stroke="#E4EFEB" stroke-width="1.6"
-                         transform="rotate(20 138 82)"/>
-                <circle cx="112" cy="88" r="29" fill="#FFFFFF" stroke="#E4EFEB" stroke-width="1.6"/>
-                <ellipse cx="112" cy="98" rx="14" ry="10" fill="#F4FAF8"/>
-                <circle cx="112" cy="94" r="4.2" fill="#33413D"/>
-                <path d="M112 98v4m0 0c0 2.4-2.4 4-4.6 3.2M112 102c0 2.4 2.4 4 4.6 3.2"
-                      stroke="#33413D" stroke-width="1.6" stroke-linecap="round" fill="none"/>
-                <circle cx="102" cy="80" r="2.8" fill="#33413D"/>
-                <circle cx="122" cy="80" r="2.8" fill="#33413D"/>
-                <rect x="92" cy="110" width="40" height="11" rx="5.5" fill="#F0927E"/>
-                <circle cx="112" cy="127" r="4.8" fill="#F6C453" stroke="#E9B23F" stroke-width="1.2"/>
-            </g>
-
-            <!-- GATO (teal) -->
-            <g>
-                <path d="M208 145c19 5 29-7 24-23" stroke="#2A8C7A" stroke-width="8"
-                      stroke-linecap="round" fill="none"/>
-                <path d="M166 82 161 58l18 12Z" fill="#2A8C7A"/>
-                <path d="M198 82 203 58l-18 12Z" fill="#2A8C7A"/>
-                <path d="M167 80 164 66l11 8Z" fill="#6FC0AF"/>
-                <path d="M197 80 200 66l-11 8Z" fill="#6FC0AF"/>
-                <ellipse cx="182" cy="132" rx="28" ry="31" fill="#2A8C7A"/>
-                <circle cx="182" cy="98" r="23" fill="#2A8C7A"/>
-                <circle cx="173" cy="96" r="2.6" fill="#0F3B33"/>
-                <circle cx="191" cy="96" r="2.6" fill="#0F3B33"/>
-                <path d="M182 100l-3-4h6Z" fill="#F0927E"/>
-                <path d="M182 100v3m0 0c0 1.9-1.9 3.2-3.7 2.6M182 103c0 1.9 1.9 3.2 3.7 2.6"
-                      stroke="#0F3B33" stroke-width="1.5" stroke-linecap="round" fill="none"/>
-                <path d="M162 98h-7M163 102l-6 2M202 98h7M201 102l6 2"
-                      stroke="#6FC0AF" stroke-width="1.5" stroke-linecap="round"/>
-            </g>
-        </svg>
     </section>
 
-    <!-- ===================== Galería de imágenes =====================
-         Carrusel con las fotos de static/img (GaleriaService).
-         Abre el botón "Ver imágenes" del banner; flechas y puntos solo
-         aparecen si hay más de una imagen. -->
-    <div class="modal fade gallery" id="galeriaModal" tabindex="-1"
-         aria-labelledby="galeriaTitulo" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered">
-            <div class="modal-content">
 
-                <div class="modal-header">
-                    <h2 class="modal-title" id="galeriaTitulo">Imágenes</h2>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-                </div>
-
-                <div class="modal-body">
-                    <div id="galeriaCarrusel" class="carousel slide">
-                        <div class="carousel-inner">
-                            <div class="carousel-item" th:each="ruta, it : ${galeria}"
-                                 th:classappend="${it.first} ? 'active'">
-                                <img class="d-block w-100" th:src="${ruta}"
-                                     th:alt="|Imagen ${it.count} de ${#lists.size(galeria)}|">
-                            </div>
-                        </div>
-
-                        <button class="carousel-control-prev" type="button"
-                                data-bs-target="#galeriaCarrusel" data-bs-slide="prev"
-                                th:if="${#lists.size(galeria) > 1}">
-                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Anterior</span>
-                        </button>
-                        <button class="carousel-control-next" type="button"
-                                data-bs-target="#galeriaCarrusel" data-bs-slide="next"
-                                th:if="${#lists.size(galeria) > 1}">
-                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Siguiente</span>
-                        </button>
-                    </div>
-
-                    <div class="carousel-indicators" th:if="${#lists.size(galeria) > 1}">
-                        <button type="button" th:each="ruta, it : ${galeria}"
-                                data-bs-target="#galeriaCarrusel"
-                                th:data-bs-slide-to="${it.index}"
-                                th:classappend="${it.first} ? 'active'"
-                                th:aria-current="${it.first}"
-                                th:aria-label="|Ir a la imagen ${it.count}|"></button>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </div>
-
-    <!-- ===================== Tarjetas de estadísticas ===================== -->
     <section class="stats" aria-label="Resumen">
         <article class="stat stat--green">
             <div class="stat__top">
